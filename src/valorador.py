@@ -6,10 +6,8 @@ Trabajo final de ISSBC.
 
 Módulo principal.
 
-Programa "valorador" que permite realizar la tarea de valoración de CommonKADS
-sobre diferentes dominios de aplicación.
-
-Desarrollado con PyQt4 siguiendo la arquitectura Modelo-Vista-Controlador.
+Programa valorador de criterios desarrollado con PyQt4 siguiendo la arquitectura Modelo-Vista-Controlador y la metodología CommonKADS. Permite realizar la tarea
+de valoración de CommonKADS sobre diferentes dominios de aplicación.
 
 TODO: Explicar qué es lo que hace y cómo funciona
 
