@@ -20,23 +20,62 @@ class ValoradorModel():
     pass
 
 
-class Caso():
+class Caso(object):
     """
     TODO: Documentar
+
+    Atributos/propiedades:
+        nombre:
+        descripcion:
+        explicacion:
     """
 
     def __init__(self):
         self.__nombre = None
         self.__descripcion = None
+        self.__explicacion = None
         self.__criterios = []
 
-    def load(self, filePath):
+    @property
+    def nombre(self):
+        """
+        Getter de la propiedad nombre.
+        """
+        return self.__nombre
+
+    @property
+    def descripcion(self):
+        """
+        Getter de la propiedad descripcion.
+        """
+        return self.__descripcion
+
+    @property
+    def explicacion(self):
+        """
+        Getter de la propiedad explicacion.
+        """
+        return self.__explicacion
+
+    def load_from_file(self, filePath):
         """
         TODO: Documentar
         """
         pass
 
     def parse_JSON(self, filePath):
+        """
+        TODO: Documentar
+        """
+        pass
+
+    def check_data_format(self, data):
+        """
+        TODO: Documentar
+        """
+        pass
+
+    def evaluate(self):
         """
         TODO: Documentar
         """
