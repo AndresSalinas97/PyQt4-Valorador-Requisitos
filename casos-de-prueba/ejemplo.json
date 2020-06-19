@@ -1,0 +1,27 @@
+﻿{
+  "caso": {
+    "nombre": "Nombre del caso",
+    "descripcion": "Descripcion del caso",
+    "criterios": [
+      {
+        "nombre": "Criterio 1",
+        "descripcion": "Descripcion del criterio 1",
+        "tipo": "Booleano"
+      },
+      {
+        "nombre": "Criterio 1",
+        "descripcion": "Descripcion del criterio 1",
+        "tipo": "Porcentaje",
+        "valor_minimo": 0.5,
+        "valor_maximo": 1
+      },
+      {
+        "nombre": "Criterio 1",
+        "descripcion": "Descripcion del criterio 1",
+        "tipo": "Entero",
+        "valor_minimo": 0,
+        "valor_maximo": 1500
+      }
+    ]
+  }
+}
