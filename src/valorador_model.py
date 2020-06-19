@@ -204,7 +204,14 @@ class CriterioBooleano(Criterio):
     def evaluate(self):
         """
         Evalúa el criterio y devuelve True o False según corresponda.
+
+        Excepciones:
+            RuntimeError: El criterio debe tener un valor asignado antes de
+                          poder ser valorado.
         """
+        if(self.valor is None):
+            raise RuntimeError("El criterio debe tener un valor asignado")
+
         return self.valor
 
 
@@ -292,7 +299,14 @@ class CriterioPorcentaje(Criterio):
     def evaluate(self):
         """
         Evalúa el criterio y devuelve True o False según corresponda.
+
+        Excepciones:
+            RuntimeError: El criterio debe tener un valor asignado antes de
+                          poder ser valorado.
         """
+        if(self.valor is None):
+            raise RuntimeError("El criterio debe tener un valor asignado")
+
         return (self.valor >= self.valor_minimo and
                 self.valor <= self.valor_maximo)
 
@@ -376,7 +390,14 @@ class CriterioEntero(Criterio):
     def evaluate(self):
         """
         Evalúa el criterio y devuelve True o False según corresponda.
+
+        Excepciones:
+            RuntimeError: El criterio debe tener un valor asignado antes de
+                          poder ser valorado.
         """
+        if(self.valor is None):
+            raise RuntimeError("El criterio debe tener un valor asignado")
+
         return (self.valor >= self.valor_minimo and
                 self.valor <= self.valor_maximo)
 
