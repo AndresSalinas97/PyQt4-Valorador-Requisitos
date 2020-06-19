@@ -15,13 +15,13 @@ from PyQt4 import QtGui
 
 class ValoradorController():
     """
-    Clase ValoradorController: Controlador del valorador.
+    Clase con el controlador del valorador.
 
     Argumentos:
         model: objeto de la clase ValoradorModel.
         view: objeto de la clase ValoradorView.
 
-    Atributos:
+    Atributos/Propiedades:
         model: objeto de la clase ValoradorModel.
         view: objeto de la clase ValoradorView.
     """

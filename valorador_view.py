@@ -15,12 +15,12 @@ from PyQt4 import QtGui
 
 class ValoradorView():
     """
-    Clase ValoradorView: Vista del valorador.
+    Clase con la vista del valorador.
 
     Monta la interfaz del valorador a partir de las clases ValoradorWidget y
     ValoradorMainWindow y permite acceder a ellas a partir de sus atributos.
 
-    Atributos:
+    Atributos/Propiedades:
         widget: QWidget con la interfaz del valorador (objeto de la clase
             ValoradorWidget).
         mainWindow: Ventana principal (objeto de la clase ValoradorMainWindow).
@@ -39,9 +39,9 @@ class ValoradorView():
 
 class ValoradorWidget(QtGui.QWidget):
     """
-    Clase ValoradorWidget: QWidget con la interfaz del valorador.
+    QWidget con la interfaz del valorador.
 
-    Atributos:
+    Atributos/Propiedades:
         TODO
     """
 
@@ -59,7 +59,7 @@ class ValoradorWidget(QtGui.QWidget):
 
 class ValoradorMainWindow(QtGui.QMainWindow):
     """
-    Clase ValoradorMainWindow: Ventana principal del programa.
+    Ventana principal del programa.
 
     Contiene la barra de menús, la barra de herramientas, la barra de estado, y,
     por supuesto, el widget con el valorador.
@@ -68,7 +68,7 @@ class ValoradorMainWindow(QtGui.QMainWindow):
         valoradorWidget: Widget con el valorador (objeto de la clase
             valoradorWidget)
 
-    Atributos:
+    Atributos/Propiedades:
         valoradorWidget: Widget con el valorador (objeto de la clase
             valoradorWidget)
         exitAction: QAction para salir del programa.
@@ -116,8 +116,8 @@ class ValoradorMainWindow(QtGui.QMainWindow):
 
 class MessageBoxes():
     """
-    Clase MessageBoxes: Contiene métodos para mostrar mensajes emergentes y
-    ventanas de diálogo para abrir/guardar ficheros/directorios.
+    Contiene métodos para mostrar mensajes emergentes y ventanas de diálogo
+    para abrir/guardar ficheros/directorios.
     """
 
     @staticmethod

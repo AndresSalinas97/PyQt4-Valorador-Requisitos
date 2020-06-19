@@ -11,6 +11,8 @@ sobre diferentes dominios de aplicación.
 
 Desarrollado con PyQt4 siguiendo la arquitectura Modelo-Vista-Controlador.
 
+TODO: Explicar qué es lo que hace y cómo funciona
+
 Autor: Andrés Salinas Lima <i52salia@uco.es>.
 """
 
@@ -23,7 +25,7 @@ from PyQt4 import QtGui
 
 class Valorador():
     """
-    Clase Valorador: Monta todas las piezas del MVC e inicia el programa.
+    Monta todas las piezas del MVC e inicia el programa.
     """
 
     def __init__(self):
