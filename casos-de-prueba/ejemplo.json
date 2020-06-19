@@ -9,15 +9,15 @@
         "tipo": "Booleano"
       },
       {
-        "nombre": "Criterio 1",
-        "descripcion": "Descripcion del criterio 1",
+        "nombre": "Criterio 2",
+        "descripcion": "Descripcion del criterio 2",
         "tipo": "Porcentaje",
         "valor_minimo": 0.5,
         "valor_maximo": 1
       },
       {
-        "nombre": "Criterio 1",
-        "descripcion": "Descripcion del criterio 1",
+        "nombre": "Criterio 3",
+        "descripcion": "Descripcion del criterio 3",
         "tipo": "Entero",
         "valor_minimo": 0,
         "valor_maximo": 1500
