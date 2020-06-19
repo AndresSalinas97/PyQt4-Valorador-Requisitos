@@ -11,6 +11,7 @@ from __future__ import print_function
 from valorador_view import MessageBoxes
 import sys
 import os
+import json
 
 
 class ValoradorModel():
@@ -22,12 +23,14 @@ class ValoradorModel():
 
 class Caso(object):
     """
-    TODO: Documentar
+    Representa un caso (contiene los criterios a valorar).
 
     Atributos/propiedades:
-        nombre:
-        descripcion:
-        explicacion:
+        nombre: String con el nombre del caso.
+        descripcion: String con la descripción del caso.
+        explicacion: String con la explicación del resultado de la valoración.
+        criterios: Los criterios a evaluar (array con objectos de la clase
+                   Criterio).
     """
 
     def __init__(self):
@@ -57,28 +60,115 @@ class Caso(object):
         """
         return self.__explicacion
 
-    def load_from_file(self, filePath):
+    @property
+    def criterios(self):
         """
-        TODO: Documentar
+        Getter de la propiedad criterios.
         """
-        pass
+        return self.__criterios
 
-    def parse_JSON(self, filePath):
+    def __str__(self):
         """
-        TODO: Documentar
+        Devuelve la representación en string del objecto (para usar con print).
         """
-        pass
+        return "Nombre: " + str(self.nombre) + \
+               "\nDescripcion: " + str(self.descripcion) + \
+               "\nNumero de criterios: " + str(len(self.__criterios))
 
-    def check_data_format(self, data):
+    def load_from_JSON_file(self, filePath):
         """
-        TODO: Documentar
-        """
-        pass
+        Carga el caso y todos sus criterios a partir de un fichero JSON con el
+        formato adecuado.
 
-    def evaluate(self):
+        Argumentos:
+            filePath: Ruta hacia el fichero.
+
+        Excepciones:
+            IOError: El fichero JSON no tiene el formato correcto.
+        """
+        # Primero reinicializamos el caso
+        self.__full_reset()
+
+        parsed_json = self.__parse_JSON_file(filePath)
+
+        try:
+            # Cargamos los datos del caso
+            self.__nombre = parsed_json['caso']['nombre']
+            self.__descripcion = parsed_json['caso']['descripcion']
+
+            # Cargamos los datos de cada criterio dependiendo de su tipo
+            for criterio in parsed_json['caso']['criterios']:
+                if (criterio['tipo'] == "Booleano"):
+                    x = CriterioBooleano(criterio['nombre'],
+                                         criterio['descripcion'])
+                    self.__criterios.append(x)
+
+                elif (criterio['tipo'] == "Porcentaje"):
+                    x = CriterioPorcentaje(criterio['nombre'],
+                                           criterio['descripcion'],
+                                           float(criterio['valor_minimo']),
+                                           float(criterio['valor_maximo']))
+                    self.__criterios.append(x)
+
+                elif (criterio['tipo'] == "Entero"):
+                    x = CriterioEntero(criterio['nombre'],
+                                       criterio['descripcion'],
+                                       int(criterio['valor_minimo']),
+                                       int(criterio['valor_maximo']))
+                    self.__criterios.append(x)
+        except:
+            self.__full_reset()
+            raise IOError("El fichero JSON no tiene el formato correcto")
+
+        # Comprobamos que todos los criterios se han cargado
+        if (len(self.__criterios) != len(parsed_json['caso']['criterios'])):
+            self.__full_reset()
+            raise IOError("El fichero JSON no tiene el formato correcto")
+
+    def __parse_JSON_file(self, filePath):
+        """
+        Lee y parsea un fichero JSON.
+
+        Argumentos:
+            filePath: Ruta hacia el fichero.
+
+        Excepciones:
+            IOError: Error al abrir el fichero JSON.
+        """
+        try:
+            with open(filePath, 'r') as f:
+                parsed_json = json.load(f)
+                f.close()
+        except:
+            raise IOError("Error al abrir el fichero JSON")
+
+        return parsed_json
+
+    def __full_reset(self):
+        """
+        Reinicializa el caso completamente (elimina todo, incluido los
+        criterios).
+        """
+        self.__nombre = None
+        self.__descripcion = None
+        self.__criterios = []
+        self.__explicacion = None
+
+    def reset(self):
+        """
+        Reinicializa el caso (elimina la explicación y el valor de los
+        criterios).
+        """
+        self.__explicacion = None
+
+        for criterio in self.criterios:
+            criterio.reset()
+
+    def valorar(self):
         """
         TODO: Documentar
         """
+        # TODO: Implementar
         pass
 
 
@@ -91,17 +181,18 @@ class Criterio(object):
 
     Argumentos:
         nombre: String con el nombre del criterio.
-        descripcion: (opcional) String con la descripción del criterio.
+        descripcion: String con la descripción del criterio.
 
     Atributos/Propiedades:
         nombre: String con el nombre del criterio.
         descripcion: String con la descripción del criterio.
         tipo: String con el tipo del criterio (Booleano, Porcentaje o Entero).
         valor: Valor actualmente asignado al criterio (su tipo dependerá del
-               tipo de criterio).
+               tipo de criterio). El criterio será evaluado en base a este
+               valor.
     """
 
-    def __init__(self, nombre, descripcion=None):
+    def __init__(self, nombre, descripcion):
         self.__nombre = nombre
         self.__descripcion = descripcion
         self.__valor = None
@@ -133,6 +224,9 @@ class Criterio(object):
         Setter de la propiedad valor.
 
         Deberá ser implementado por la clase heredera.
+
+        Argumentos:
+            valor: El valor del criterio.
         """
         raise NotImplementedError
 
@@ -153,13 +247,19 @@ class Criterio(object):
                "\nDescripcion: " + str(self.descripcion) + \
                "\nTipo: " + str(self.tipo)
 
-    def evaluate(self):
+    def valorar(self):
         """
         Evalúa el criterio y devuelve True o False según corresponda.
 
         Deberá ser implementado por la clase heredera.
         """
         raise NotImplementedError
+
+    def reset(self):
+        """
+        Reinicializa el valor del criterio.
+        """
+        self.__valor = None
 
 
 class CriterioBooleano(Criterio):
@@ -168,23 +268,27 @@ class CriterioBooleano(Criterio):
 
     Argumentos:
         nombre: String con el nombre del criterio.
-        descripcion: (opcional) String con la descripción del criterio.
+        descripcion: String con la descripción del criterio.
 
     Atributos/Propiedades:
         nombre: String con el nombre del criterio.
         descripcion: String con la descripción del criterio.
         tipo: String con el tipo del criterio (Booleano, Porcentaje o Entero).
         valor: Valor actualmente asignado al criterio (su tipo dependerá del
-               tipo de criterio).
+               tipo de criterio). El criterio será evaluado en base a este
+               valor.
     """
 
-    def __init__(self, nombre, descripcion=None):
+    def __init__(self, nombre, descripcion):
         super(CriterioBooleano, self).__init__(nombre, descripcion)
 
     @Criterio.valor.setter
     def valor(self, valor):
         """
         Setter de la propierdad valor.
+
+        Argumentos:
+            valor: El valor del criterio.
 
         Excepciones:
             TypeError: El argumento valor debe ser un booleano.
@@ -201,7 +305,7 @@ class CriterioBooleano(Criterio):
         """
         return("Booleano")
 
-    def evaluate(self):
+    def valorar(self):
         """
         Evalúa el criterio y devuelve True o False según corresponda.
 
@@ -225,7 +329,7 @@ class CriterioPorcentaje(Criterio):
                       True.
         valor_maximo: Porcentaje máximo posible para evaluar el criterio como
                       True.
-        descripcion: (opcional) String con la descripción del criterio.
+        descripcion: String con la descripción del criterio.
 
     Excepciones:
         ValueError: El argumento valor_minimo debe estar entre 0 y 1.
@@ -236,14 +340,15 @@ class CriterioPorcentaje(Criterio):
         descripcion: String con la descripción del criterio.
         tipo: String con el tipo del criterio (Booleano, Porcentaje o Entero).
         valor: Valor actualmente asignado al criterio (su tipo dependerá del
-               tipo de criterio).
+               tipo de criterio). El criterio será evaluado en base a este
+               valor.
         valor_minimo: Porcentaje mínimo necesario para evaluar el criterio como
                       True.
         valor_maximo: Porcentaje máximo posible para evaluar el criterio como
                       True.
     """
 
-    def __init__(self, nombre, valor_minimo, valor_maximo, descripcion=None):
+    def __init__(self, nombre, descripcion, valor_minimo, valor_maximo):
         super(CriterioPorcentaje, self).__init__(nombre, descripcion)
 
         if(valor_minimo < 0 or valor_minimo > 1):
@@ -258,6 +363,9 @@ class CriterioPorcentaje(Criterio):
     def valor(self, valor):
         """
         Setter de la propiedad valor.
+
+        Argumentos:
+            valor: El valor del criterio.
 
         Excepciones:
             ValueError: El argumento valor_minimo debe estar entre 0 y 1.
@@ -296,7 +404,7 @@ class CriterioPorcentaje(Criterio):
             "\nValor minimo: " + str(self.valor_minimo) + \
             "\nValor maximo: " + str(self.valor_maximo)
 
-    def evaluate(self):
+    def valorar(self):
         """
         Evalúa el criterio y devuelve True o False según corresponda.
 
@@ -319,7 +427,7 @@ class CriterioEntero(Criterio):
         nombre: String con el nombre del criterio.
         valor_minimo: Valor mínimo necesario para evaluar el criterio como True.
         valor_maximo: Valor máximo posible para evaluar el criterio como True.
-        descripcion: (opcional) String con la descripción del criterio.
+        descripcion: String con la descripción del criterio.
 
     Excepciones:
         TypeError: El argumento valor_minimo debe ser un entero.
@@ -334,7 +442,7 @@ class CriterioEntero(Criterio):
         valor_maximo: Valor máximo posible para evaluar el criterio como True.
     """
 
-    def __init__(self, nombre, valor_minimo, valor_maximo, descripcion=None):
+    def __init__(self, nombre, descripcion, valor_minimo, valor_maximo):
         super(CriterioEntero, self).__init__(nombre, descripcion)
 
         if (not isinstance(valor_minimo, int)):
@@ -387,7 +495,7 @@ class CriterioEntero(Criterio):
             "\nValor minimo: " + str(self.valor_minimo) + \
             "\nValor maximo: " + str(self.valor_maximo)
 
-    def evaluate(self):
+    def valorar(self):
         """
         Evalúa el criterio y devuelve True o False según corresponda.
 
@@ -406,26 +514,22 @@ if __name__ == "__main__":
     """
     En caso de que intentemos ejecutar este módulo.
     """
-    # print("Este módulo no puede ser ejecutado", file=sys.stderr)
+    # print("Este módulo no puede ser ejecutado", file=sys.stderr)  # TODO: Descomentar
+    # TODO: Quitar todo esto aquí
 
-    criterios = []
+    caso = Caso()
 
-    x = CriterioBooleano("Test booleano", "Descripcion test del Test booleano")
-    x.valor = True
-    criterios.append(x)
+    caso.load_from_JSON_file("casos-de-prueba/ejemplo.json")
 
-    x = CriterioPorcentaje("Test porcentaje", 0.5, 0.5, "Test")
-    x.valor = 0.5
-    criterios.append(x)
+    print(caso)
 
-    x = CriterioEntero("Test entero", 5, 10)
-    x.valor = 15
-    criterios.append(x)
+    caso.criterios[0].valor = True
+    caso.criterios[1].valor = 0.5
+    caso.criterios[2].valor = 10
 
-    for criterio in criterios:
+    for criterio in caso.criterios:
         print("---------------------------")
         print(criterio)
-        print("-")
         print("VALOR: " + str(criterio.valor))
-        print("VALORACION: " + str(criterio.evaluate()))
+        print("VALORACION: " + str(criterio.valorar()))
     print("---------------------------")

@@ -42,7 +42,7 @@ class ValoradorWidget(QtGui.QWidget):
     QWidget con la interfaz del valorador.
 
     Atributos/Propiedades:
-        TODO
+        TODO: Documentar
     """
 
     def __init__(self):
