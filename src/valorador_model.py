@@ -73,7 +73,7 @@ class Caso(object):
         """
         return "Nombre: " + str(self.nombre) + \
                "\nDescripcion: " + str(self.descripcion) + \
-               "\nNumero de criterios: " + str(len(self.__criterios))
+               "\nNumero de criterios: " + str(len(self.criterios))
 
     def load_from_JSON_file(self, filePath):
         """
@@ -101,27 +101,27 @@ class Caso(object):
                 if (criterio['tipo'] == "Booleano"):
                     x = CriterioBooleano(criterio['nombre'],
                                          criterio['descripcion'])
-                    self.__criterios.append(x)
+                    self.criterios.append(x)
 
                 elif (criterio['tipo'] == "Porcentaje"):
                     x = CriterioPorcentaje(criterio['nombre'],
                                            criterio['descripcion'],
                                            float(criterio['valor_minimo']),
                                            float(criterio['valor_maximo']))
-                    self.__criterios.append(x)
+                    self.criterios.append(x)
 
                 elif (criterio['tipo'] == "Entero"):
                     x = CriterioEntero(criterio['nombre'],
                                        criterio['descripcion'],
                                        int(criterio['valor_minimo']),
                                        int(criterio['valor_maximo']))
-                    self.__criterios.append(x)
+                    self.criterios.append(x)
         except:
             self.__full_reset()
             raise IOError("El fichero JSON no tiene el formato correcto")
 
         # Comprobamos que todos los criterios se han cargado
-        if (len(self.__criterios) != len(parsed_json['caso']['criterios'])):
+        if (len(self.criterios) != len(parsed_json['caso']['criterios'])):
             self.__full_reset()
             raise IOError("El fichero JSON no tiene el formato correcto")
 
@@ -166,10 +166,24 @@ class Caso(object):
 
     def valorar(self):
         """
-        TODO: Documentar
+        Evalúa todos los criterios, devuelve el resultado de la valoración y
+        actualiza el atributo explicacion con la explicación del resultado.
         """
-        # TODO: Implementar
-        pass
+        result = True
+        self.__explicacion = ""
+
+        for criterio in self.criterios:
+            self.__explicacion += str(criterio)
+            self.__explicacion += "\n==> Valor introducido: " + \
+                str(criterio.valor)
+
+            if(criterio.valorar()):
+                self.__explicacion += "\n==> Valoracion: APROBADO\n\n"
+            else:
+                self.__explicacion += "\n==> Valoracion: RECHAZADO\n\n"
+                result = False
+
+        return result
 
 
 class Criterio(object):
@@ -515,21 +529,30 @@ if __name__ == "__main__":
     En caso de que intentemos ejecutar este módulo.
     """
     # print("Este módulo no puede ser ejecutado", file=sys.stderr)  # TODO: Descomentar
-    # TODO: Quitar todo esto aquí
+
+    # TODO: Quitar todo esto de aquí
 
     caso = Caso()
 
     caso.load_from_JSON_file("casos-de-prueba/ejemplo.json")
 
-    print(caso)
-
     caso.criterios[0].valor = True
     caso.criterios[1].valor = 0.5
-    caso.criterios[2].valor = 10
+    caso.criterios[2].valor = 10000
 
-    for criterio in caso.criterios:
-        print("---------------------------")
-        print(criterio)
-        print("VALOR: " + str(criterio.valor))
-        print("VALORACION: " + str(criterio.valorar()))
-    print("---------------------------")
+    print("\n")
+    print(caso)
+
+    # print("\n")
+    # for criterio in caso.criterios:
+    #     print("---------------------------")
+    #     print(criterio)
+    #     print("VALOR: " + str(criterio.valor))
+    #     print("VALORACION: " + str(criterio.valorar()))
+    # print("---------------------------")
+
+    print("\n")
+    print("VALORACIÓN CASO: " + str(caso.valorar()))
+
+    print("\n")
+    print(caso.explicacion)
