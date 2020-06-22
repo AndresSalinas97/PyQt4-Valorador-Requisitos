@@ -45,16 +45,160 @@ class ValoradorWidget(QtGui.QWidget):
         TODO: Documentar
     """
 
+    # Espacio vertical entre los elementos del grid layout
+    _VERTICAL_SPACING = 10
+
+    # Espacio horizontal entre los elementos del grid layout
+    _HORIZONTAL_SPACING = 30
+
+    # Ancho mínimo de las columnas del grid layout
+    _COLUMN_0_MIN_WIDTH = 200
+    _COLUMN_1_MIN_WIDTH = 250
+    _COLUMN_2_MIN_WIDTH = 250
+
+    # Factor de estiramiento de las columnas del grid layout
+    _COLUMN_0_STRETCH = 1
+    _COLUMN_1_STRETCH = 2
+    _COLUMN_2_STRETCH = 2
+
+    # Altura mínima de las final del grid layout
+    _ROW_1_MIN_HEIGHT = 100
+    _ROW_4_MIN_HEIGHT = 100
+    _ROW_8_MIN_HEIGHT = 100
+
     def __init__(self):
         super(ValoradorWidget, self).__init__()
-
         self._initUI()
 
     def _initUI(self):
         """
         Inicialización de la interfaz.
         """
-        pass
+        ##### Fuentes #####
+        self.bold_label_font = QtGui.QFont()
+        self.bold_label_font.setBold(True)
+
+        ##### Etiquetas #####
+        caso_label = QtGui.QLabel(u"Caso")
+        caso_label.setFont(self.bold_label_font)
+
+        desc_caso_label = QtGui.QLabel(u"Descripción del caso")
+        desc_caso_label.setFont(self.bold_label_font)
+
+        criterio_label = QtGui.QLabel(u"Criterio")
+        criterio_label.setFont(self.bold_label_font)
+
+        desc_criterio_label = QtGui.QLabel(u"Descripción del criterio")
+        desc_criterio_label.setFont(self.bold_label_font)
+
+        valor_criterio_label = QtGui.QLabel(u"Valor")
+        valor_criterio_label.setFont(self.bold_label_font)
+
+        valoracion_label = QtGui.QLabel(u"Valoración")
+        valoracion_label.setFont(self.bold_label_font)
+
+        explicacion_label = QtGui.QLabel(u"Explicación")
+        explicacion_label.setFont(self.bold_label_font)
+
+        ##### Botones #####
+        self.abrir_Button = QtGui.QPushButton(u"Abrir fichero de caso")
+        self.abrir_Button.setStatusTip(
+            u"Abrir fichero JSON con el caso a valorar")
+
+        self.valorar_Button = QtGui.QPushButton(u"VALORAR")
+        self.valorar_Button.setStatusTip(
+            u"Iniciar proceso de valoración")
+
+        self.reset_Button = QtGui.QPushButton(u"Reset")
+        self.reset_Button.setStatusTip(
+            u"Reinicializar resultado y valores de los criterios")
+
+        ##### Campos de texto de una línea #####
+        self.ruta_caso_LineEdit = QtGui.QLineEdit()
+        self.ruta_caso_LineEdit.setReadOnly(True)
+        self.ruta_caso_LineEdit.setAlignment(QtCore.Qt.AlignCenter)
+        self.ruta_caso_LineEdit.setStatusTip(u"Ruta del caso abierto")
+
+        ##### Campos de texto #####
+        self.desc_caso_TextEdit = QtGui.QTextEdit()
+        self.desc_caso_TextEdit.setReadOnly(True)
+        self.desc_caso_TextEdit.setMinimumHeight(1)
+        self.desc_caso_TextEdit.setStatusTip(u"Descripción del caso abierto")
+
+        self.desc_criterio_TextEdit = QtGui.QTextEdit()
+        self.desc_criterio_TextEdit.setReadOnly(True)
+        self.desc_criterio_TextEdit.setMinimumHeight(1)
+        self.desc_criterio_TextEdit.setStatusTip(
+            u"Descripción del criterio seleccionado")
+
+        self.valoracion_TextEdit = QtGui.QTextEdit()
+        self.valoracion_TextEdit.setReadOnly(True)
+        self.valoracion_TextEdit.setMinimumHeight(1)
+        self.valoracion_TextEdit.setStatusTip(u"Resultado de la valoración")
+
+        self.explicacion_TextEdit = QtGui.QTextEdit()
+        self.explicacion_TextEdit.setReadOnly(True)
+        self.explicacion_TextEdit.setMinimumHeight(1)
+        self.explicacion_TextEdit.setStatusTip(u"Explicación del resultado")
+
+        ##### Lista de criterios #####
+        self.criterios_List = QtGui.QListWidget()
+        self.criterios_List.setMinimumHeight(1)
+        # Mostramos siempre las barras de scroll para evitar bug en el que
+        # dichas barras de scroll no aparecen cuando deberían.
+        self.criterios_List.setHorizontalScrollBarPolicy(
+            QtCore.Qt.ScrollBarAlwaysOn)
+        self.criterios_List.setVerticalScrollBarPolicy(
+            QtCore.Qt.ScrollBarAlwaysOn)
+        self.criterios_List.setStatusTip(
+            "Criterios del caso (seleccione uno para examinarlo e introducir " +
+            "su valor)")
+
+        ##### Configuración grid layout #####
+        grid = QtGui.QGridLayout()
+
+        grid.setVerticalSpacing(self._VERTICAL_SPACING)
+        grid.setHorizontalSpacing(self._HORIZONTAL_SPACING)
+
+        grid.setColumnMinimumWidth(0, self._COLUMN_0_MIN_WIDTH)
+        grid.setColumnMinimumWidth(1, self._COLUMN_1_MIN_WIDTH)
+        grid.setColumnMinimumWidth(2, self._COLUMN_2_MIN_WIDTH)
+
+        grid.setColumnStretch(0, self._COLUMN_0_STRETCH)
+        grid.setColumnStretch(1, self._COLUMN_1_STRETCH)
+        grid.setColumnStretch(2, self._COLUMN_2_STRETCH)
+
+        grid.setRowMinimumHeight(1, self._ROW_1_MIN_HEIGHT)
+        grid.setRowMinimumHeight(4, self._ROW_4_MIN_HEIGHT)
+        grid.setRowMinimumHeight(7, self._ROW_8_MIN_HEIGHT)
+
+        grid.addWidget(caso_label, 0, 0, 1, 2)
+        grid.addWidget(desc_caso_label, 0, 2, 1, 1)
+
+        grid.addWidget(self.ruta_caso_LineEdit, 1, 0, 1, 2)
+        grid.addWidget(self.desc_caso_TextEdit, 1, 2, 1, 1)
+
+        grid.addWidget(self.abrir_Button, 2, 0, 1, 3)
+
+        grid.addWidget(criterio_label, 3, 0, 1, 1)
+        grid.addWidget(desc_criterio_label, 3, 1, 1, 1)
+        grid.addWidget(valor_criterio_label, 3, 2, 1, 1)
+
+        grid.addWidget(self.criterios_List, 4, 0, 1, 1)
+        grid.addWidget(self.desc_criterio_TextEdit, 4, 1, 1, 1)
+        # grid.addWidget(self., 4, 2, 1, 1)
+
+        grid.addWidget(self.valorar_Button, 5, 0, 1, 3)
+
+        grid.addWidget(valoracion_label, 6, 0, 1, 2)
+        grid.addWidget(explicacion_label, 6, 2, 1, 1)
+
+        grid.addWidget(self.valoracion_TextEdit, 7, 0, 1, 2)
+        grid.addWidget(self.explicacion_TextEdit, 7, 2, 1, 1)
+
+        grid.addWidget(self.reset_Button, 8, 0, 1, 3)
+
+        self.setLayout(grid)
 
 
 class ValoradorMainWindow(QtGui.QMainWindow):
@@ -212,3 +356,5 @@ if __name__ == "__main__":
     En caso de que intentemos ejecutar este módulo.
     """
     print("Este módulo no debería ser ejecutado", file=sys.stderr)
+
+    execfile('src/valorador.py')  # TODO: Eliminar esto
