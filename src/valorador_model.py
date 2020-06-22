@@ -34,38 +34,38 @@ class Caso(object):
     """
 
     def __init__(self):
-        self.__nombre = None
-        self.__descripcion = None
-        self.__explicacion = None
-        self.__criterios = []
+        self._nombre = None
+        self._descripcion = None
+        self._explicacion = None
+        self._criterios = []
 
     @property
     def nombre(self):
         """
         Getter de la propiedad nombre.
         """
-        return self.__nombre
+        return self._nombre
 
     @property
     def descripcion(self):
         """
         Getter de la propiedad descripcion.
         """
-        return self.__descripcion
+        return self._descripcion
 
     @property
     def explicacion(self):
         """
         Getter de la propiedad explicacion.
         """
-        return self.__explicacion
+        return self._explicacion
 
     @property
     def criterios(self):
         """
         Getter de la propiedad criterios.
         """
-        return self.__criterios
+        return self._criterios
 
     def __str__(self):
         """
@@ -75,26 +75,26 @@ class Caso(object):
                "\nDescripcion: " + str(self.descripcion) + \
                "\nNumero de criterios: " + str(len(self.criterios))
 
-    def load_from_JSON_file(self, filePath):
+    def load_from_JSON_file(self, file_path):
         """
         Carga el caso y todos sus criterios a partir de un fichero JSON con el
         formato adecuado.
 
         Argumentos:
-            filePath: Ruta hacia el fichero.
+            file_path: Ruta hacia el fichero.
 
         Excepciones:
             IOError: El fichero JSON no tiene el formato correcto.
         """
         # Primero reinicializamos el caso
-        self.__full_reset()
+        self._full_reset()
 
-        parsed_json = self.__parse_JSON_file(filePath)
+        parsed_json = self._parse_JSON_file(file_path)
 
         try:
             # Cargamos los datos del caso
-            self.__nombre = parsed_json['caso']['nombre']
-            self.__descripcion = parsed_json['caso']['descripcion']
+            self._nombre = parsed_json['caso']['nombre']
+            self._descripcion = parsed_json['caso']['descripcion']
 
             # Cargamos los datos de cada criterio dependiendo de su tipo
             for criterio in parsed_json['caso']['criterios']:
@@ -118,26 +118,26 @@ class Caso(object):
                                        int(criterio['valor_maximo']))
                     self.criterios.append(x)
         except:
-            self.__full_reset()
+            self._full_reset()
             raise IOError("El fichero JSON no tiene el formato correcto")
 
         # Comprobamos que todos los criterios se han cargado
         if (len(self.criterios) != len(parsed_json['caso']['criterios'])):
-            self.__full_reset()
+            self._full_reset()
             raise IOError("El fichero JSON no tiene el formato correcto")
 
-    def __parse_JSON_file(self, filePath):
+    def _parse_JSON_file(self, file_path):
         """
         Lee y parsea un fichero JSON.
 
         Argumentos:
-            filePath: Ruta hacia el fichero.
+            file_path: Ruta hacia el fichero.
 
         Excepciones:
             IOError: Error al abrir el fichero JSON.
         """
         try:
-            with open(filePath, 'r') as f:
+            with open(file_path, 'r') as f:
                 parsed_json = json.load(f)
                 f.close()
         except:
@@ -145,22 +145,22 @@ class Caso(object):
 
         return parsed_json
 
-    def __full_reset(self):
+    def _full_reset(self):
         """
         Reinicializa el caso completamente (elimina todo, incluido los
         criterios).
         """
-        self.__nombre = None
-        self.__descripcion = None
-        self.__criterios = []
-        self.__explicacion = None
+        self._nombre = None
+        self._descripcion = None
+        self._criterios = []
+        self._explicacion = None
 
     def reset(self):
         """
         Reinicializa el caso (elimina la explicación y el valor de los
         criterios).
         """
-        self.__explicacion = None
+        self._explicacion = None
 
         for criterio in self.criterios:
             criterio.reset()
@@ -171,17 +171,17 @@ class Caso(object):
         actualiza el atributo explicacion con la explicación del resultado.
         """
         result = True
-        self.__explicacion = ""
+        self._explicacion = ""
 
         for criterio in self.criterios:
-            self.__explicacion += str(criterio)
-            self.__explicacion += "\n==> Valor introducido: " + \
+            self._explicacion += str(criterio)
+            self._explicacion += "\n==> Valor introducido: " + \
                 str(criterio.valor)
 
             if(criterio.valorar()):
-                self.__explicacion += "\n==> Valoracion: APROBADO\n\n"
+                self._explicacion += "\n==> Valoracion: APROBADO\n\n"
             else:
-                self.__explicacion += "\n==> Valoracion: RECHAZADO\n\n"
+                self._explicacion += "\n==> Valoracion: RECHAZADO\n\n"
                 result = False
 
         return result
@@ -208,30 +208,30 @@ class Criterio(object):
     """
 
     def __init__(self, nombre, descripcion):
-        self.__nombre = nombre
-        self.__descripcion = descripcion
-        self.__valor = None
+        self._nombre = nombre
+        self._descripcion = descripcion
+        self._valor = None
 
     @property
     def nombre(self):
         """
         Getter de la propiedad nombre.
         """
-        return self.__nombre
+        return self._nombre
 
     @property
     def descripcion(self):
         """
         Getter de la propiedad descripcion.
         """
-        return self.__descripcion
+        return self._descripcion
 
     @property
     def valor(self):
         """
         Getter de la propiedad valor.
         """
-        return self.__valor
+        return self._valor
 
     @valor.setter
     def valor(self, valor):
@@ -274,7 +274,7 @@ class Criterio(object):
         """
         Reinicializa el valor del criterio.
         """
-        self.__valor = None
+        self._valor = None
 
 
 class CriterioBooleano(Criterio):
@@ -307,7 +307,7 @@ class CriterioBooleano(Criterio):
         if (not isinstance(valor_deseado, bool)):
             raise TypeError("El valor introducido debe ser un booleano")
 
-        self.__valor_deseado = valor_deseado
+        self._valor_deseado = valor_deseado
 
     @Criterio.valor.setter
     def valor(self, valor):
@@ -323,7 +323,7 @@ class CriterioBooleano(Criterio):
         if (not isinstance(valor, bool)):
             raise TypeError("El valor introducido debe ser un booleano")
 
-        self._Criterio__valor = valor
+        self._valor = valor
 
     @property
     def tipo(self):
@@ -337,7 +337,7 @@ class CriterioBooleano(Criterio):
         """
         Getter de la propiedad valor_deseado.
         """
-        return self.__valor_deseado
+        return self._valor_deseado
 
     def __str__(self):
         """
@@ -397,8 +397,8 @@ class CriterioPorcentaje(Criterio):
         if(valor_maximo < 0 or valor_maximo > 1):
             raise ValueError("El valor introducido debe estar entre 0 y 1")
 
-        self.__valor_minimo = valor_minimo
-        self.__valor_maximo = valor_maximo
+        self._valor_minimo = valor_minimo
+        self._valor_maximo = valor_maximo
 
     @Criterio.valor.setter
     def valor(self, valor):
@@ -414,7 +414,7 @@ class CriterioPorcentaje(Criterio):
         if (valor < 0 or valor > 1):
             raise ValueError("El valor introducido debe estar entre 0 y 1")
 
-        self._Criterio__valor = valor
+        self._valor = valor
 
     @property
     def tipo(self):
@@ -428,14 +428,14 @@ class CriterioPorcentaje(Criterio):
         """
         Getter de la propiedad valor_minimo.
         """
-        return self.__valor_minimo
+        return self._valor_minimo
 
     @property
     def valor_maximo(self):
         """
         Getter de la propiedad valor_maximo.
         """
-        return self.__valor_maximo
+        return self._valor_maximo
 
     def __str__(self):
         """
@@ -491,8 +491,8 @@ class CriterioEntero(Criterio):
         if (not isinstance(valor_maximo, int)):
             raise TypeError("El valor introducido debe ser un entero")
 
-        self.__valor_minimo = valor_minimo
-        self.__valor_maximo = valor_maximo
+        self._valor_minimo = valor_minimo
+        self._valor_maximo = valor_maximo
 
     @Criterio.valor.setter
     def valor(self, valor):
@@ -505,7 +505,7 @@ class CriterioEntero(Criterio):
         if (not isinstance(valor, int)):
             raise TypeError("El valor introducido debe ser un entero")
 
-        self._Criterio__valor = valor
+        self._valor = valor
 
     @property
     def tipo(self):
@@ -519,14 +519,14 @@ class CriterioEntero(Criterio):
         """
         Getter de la propiedad valor_minimo.
         """
-        return self.__valor_minimo
+        return self._valor_minimo
 
     @property
     def valor_maximo(self):
         """
         Getter de la propiedad valor_maximo.
         """
-        return self.__valor_maximo
+        return self._valor_maximo
 
     def __str__(self):
         """
@@ -551,10 +551,13 @@ class CriterioEntero(Criterio):
                 self.valor <= self.valor_maximo)
 
 
-def TESTS():
+if __name__ == "__main__":
     """
-    TODO: Eliminar esto cuando acabemos con las pruebas
+    En caso de que intentemos ejecutar este módulo.
     """
+    print("Este módulo no debería ser ejecutado", file=sys.stderr)
+
+    # TODO: Eliminar todo esto cuando acabemos con las pruebas
 
     caso = Caso()
 
@@ -567,24 +570,10 @@ def TESTS():
     print("\n")
     print(caso)
 
-    # print("\n")
-    # for criterio in caso.criterios:
-    #     print("---------------------------")
-    #     print(criterio)
-    #     print("VALOR: " + str(criterio.valor))
-    #     print("VALORACION: " + str(criterio.valorar()))
-    # print("---------------------------")
-
     print("\n")
     print("VALORACIÓN CASO: " + str(caso.valorar()))
 
     print("\n")
     print(caso.explicacion)
 
-
-if __name__ == "__main__":
-    """
-    En caso de que intentemos ejecutar este módulo.
-    """
-    print("Este módulo no debería ser ejecutado", file=sys.stderr)
-    TESTS()  # TODO: Eliminar esto cuando acabemos con las pruebas
+    execfile('src/valorador.py')  # TODO: Eliminar esto

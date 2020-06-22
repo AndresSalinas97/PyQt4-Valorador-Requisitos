@@ -38,4 +38,4 @@ if __name__ == "__main__":
     """
     Función principal: Inicia el programa.
     """
-    ValoradorProgram = Valorador()
+    valorador_program = Valorador()

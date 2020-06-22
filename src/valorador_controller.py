@@ -67,3 +67,5 @@ if __name__ == "__main__":
     En caso de que intentemos ejecutar este módulo.
     """
     print("Este módulo no debería ser ejecutado", file=sys.stderr)
+
+    execfile('src/valorador.py')  # TODO: Eliminar esto
