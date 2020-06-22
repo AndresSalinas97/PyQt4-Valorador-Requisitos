@@ -71,9 +71,9 @@ class Caso(object):
         """
         Devuelve la representación en string del objecto (para usar con print).
         """
-        return "Nombre: " + str(self.nombre) + \
-               "\nDescripcion: " + str(self.descripcion) + \
-               "\nNumero de criterios: " + str(len(self.criterios))
+        return "- Nombre: " + str(self.nombre) + \
+               "\n- Descripcion: " + str(self.descripcion) + \
+               "\n- Numero de criterios: " + str(len(self.criterios))
 
     def load_from_JSON_file(self, file_path):
         """
@@ -172,8 +172,12 @@ class Caso(object):
         """
         result = True
         self._explicacion = ""
+        i = 1
+        n_criterios = len(self.criterios)
 
         for criterio in self.criterios:
+            self._explicacion += "Criterio " + \
+                                 str(i) + "/" + str(n_criterios) + "\n"
             self._explicacion += str(criterio)
             self._explicacion += "\n==> Valor introducido: " + \
                 str(criterio.valor)
@@ -183,6 +187,8 @@ class Caso(object):
             else:
                 self._explicacion += "\n==> Valoracion: RECHAZADO\n\n"
                 result = False
+
+            i += 1
 
         return result
 
@@ -258,9 +264,9 @@ class Criterio(object):
         """
         Devuelve la representación en string del objecto (para usar con print).
         """
-        return "Nombre: " + str(self.nombre) + \
-               "\nDescripcion: " + str(self.descripcion) + \
-               "\nTipo: " + str(self.tipo)
+        return "- Nombre: " + str(self.nombre) + \
+               "\n- Descripcion: " + str(self.descripcion) + \
+               "\n- Tipo: " + str(self.tipo)
 
     def valorar(self):
         """
@@ -344,7 +350,7 @@ class CriterioBooleano(Criterio):
         Devuelve la representación en string del objecto (para usar con print).
         """
         return super(CriterioBooleano, self).__str__() + \
-            "\nValor deseado: " + str(self.valor_deseado)
+            "\n- Valor deseado: " + str(self.valor_deseado)
 
     def valorar(self):
         """
@@ -442,8 +448,8 @@ class CriterioPorcentaje(Criterio):
         Devuelve la representación en string del objecto (para usar con print).
         """
         return super(CriterioPorcentaje, self).__str__() + \
-            "\nValor minimo: " + str(self.valor_minimo) + \
-            "\nValor maximo: " + str(self.valor_maximo)
+            "\n- Valor minimo: " + str(self.valor_minimo) + \
+            "\n- Valor maximo: " + str(self.valor_maximo)
 
     def valorar(self):
         """
@@ -533,8 +539,8 @@ class CriterioEntero(Criterio):
         Devuelve la representación en string del objecto (para usar con print).
         """
         return super(CriterioEntero, self).__str__() + \
-            "\nValor minimo: " + str(self.valor_minimo) + \
-            "\nValor maximo: " + str(self.valor_maximo)
+            "\n- Valor minimo: " + str(self.valor_minimo) + \
+            "\n- Valor maximo: " + str(self.valor_maximo)
 
     def valorar(self):
         """
