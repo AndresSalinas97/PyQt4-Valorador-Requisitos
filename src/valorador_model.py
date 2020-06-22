@@ -100,7 +100,8 @@ class Caso(object):
             for criterio in parsed_json['caso']['criterios']:
                 if (criterio['tipo'] == "Booleano"):
                     x = CriterioBooleano(criterio['nombre'],
-                                         criterio['descripcion'])
+                                         criterio['descripcion'],
+                                         criterio['valor_deseado'])
                     self.criterios.append(x)
 
                 elif (criterio['tipo'] == "Porcentaje"):
@@ -193,7 +194,7 @@ class Criterio(object):
     Esta clase no debe ser instanciada; es solo una interfaz (clase base
     abstracta).
 
-    Argumentos:
+    Argumentos constructor:
         nombre: String con el nombre del criterio.
         descripcion: String con la descripción del criterio.
 
@@ -280,9 +281,14 @@ class CriterioBooleano(Criterio):
     """
     Representa un criterio del tipo booleano.
 
-    Argumentos:
+    Argumentos constructor:
         nombre: String con el nombre del criterio.
         descripcion: String con la descripción del criterio.
+        valor_deseado: Valor que el criterio debe tener para ser evaluado como
+                       True.
+
+    Excepciones constructor:
+        TypeError: El argumento valor_deseado debe ser un booleano.
 
     Atributos/Propiedades:
         nombre: String con el nombre del criterio.
@@ -291,10 +297,17 @@ class CriterioBooleano(Criterio):
         valor: Valor actualmente asignado al criterio (su tipo dependerá del
                tipo de criterio). El criterio será evaluado en base a este
                valor.
+        valor_deseado: Valor que el criterio debe tener para ser evaluado como
+                       True.
     """
 
-    def __init__(self, nombre, descripcion):
+    def __init__(self, nombre, descripcion, valor_deseado):
         super(CriterioBooleano, self).__init__(nombre, descripcion)
+
+        if (not isinstance(valor_deseado, bool)):
+            raise TypeError("El valor introducido debe ser un booleano")
+
+        self.__valor_deseado = valor_deseado
 
     @Criterio.valor.setter
     def valor(self, valor):
@@ -319,6 +332,20 @@ class CriterioBooleano(Criterio):
         """
         return("Booleano")
 
+    @property
+    def valor_deseado(self):
+        """
+        Getter de la propiedad valor_deseado.
+        """
+        return self.__valor_deseado
+
+    def __str__(self):
+        """
+        Devuelve la representación en string del objecto (para usar con print).
+        """
+        return super(CriterioBooleano, self).__str__() + \
+            "\nValor deseado: " + str(self.valor_deseado)
+
     def valorar(self):
         """
         Evalúa el criterio y devuelve True o False según corresponda.
@@ -330,22 +357,22 @@ class CriterioBooleano(Criterio):
         if(self.valor is None):
             raise RuntimeError("El criterio debe tener un valor asignado")
 
-        return self.valor
+        return (self.valor == self.valor_deseado)
 
 
 class CriterioPorcentaje(Criterio):
     """
     Representa un criterio del tipo Porcentaje.
 
-    Argumentos:
+    Argumentos constructor:
         nombre: String con el nombre del criterio.
+        descripcion: String con la descripción del criterio.
         valor_minimo: Porcentaje mínimo necesario para evaluar el criterio como
                       True.
         valor_maximo: Porcentaje máximo posible para evaluar el criterio como
                       True.
-        descripcion: String con la descripción del criterio.
 
-    Excepciones:
+    Excepciones constructor:
         ValueError: El argumento valor_minimo debe estar entre 0 y 1.
         ValueError: El argumento valor_maximo debe estar entre 0 y 1.
 
@@ -437,13 +464,13 @@ class CriterioEntero(Criterio):
     """
     Representa un criterio del tipo Entero.
 
-    Argumentos:
+    Argumentos constructor:
         nombre: String con el nombre del criterio.
+        descripcion: String con la descripción del criterio.
         valor_minimo: Valor mínimo necesario para evaluar el criterio como True.
         valor_maximo: Valor máximo posible para evaluar el criterio como True.
-        descripcion: String con la descripción del criterio.
 
-    Excepciones:
+    Excepciones constructor:
         TypeError: El argumento valor_minimo debe ser un entero.
         TypeError: El argumento valor_maximo debe ser un entero.
 
@@ -524,13 +551,10 @@ class CriterioEntero(Criterio):
                 self.valor <= self.valor_maximo)
 
 
-if __name__ == "__main__":
+def TESTS():
     """
-    En caso de que intentemos ejecutar este módulo.
+    TODO: Eliminar esto cuando acabemos con las pruebas
     """
-    print("Este módulo no debería ser ejecutado", file=sys.stderr)
-
-    # TODO: Quitar todo esto de aquí
 
     caso = Caso()
 
@@ -556,3 +580,11 @@ if __name__ == "__main__":
 
     print("\n")
     print(caso.explicacion)
+
+
+if __name__ == "__main__":
+    """
+    En caso de que intentemos ejecutar este módulo.
+    """
+    print("Este módulo no debería ser ejecutado", file=sys.stderr)
+    TESTS()  # TODO: Eliminar esto cuando acabemos con las pruebas

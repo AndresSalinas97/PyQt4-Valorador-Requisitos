@@ -17,7 +17,7 @@ class ValoradorController():
     """
     Clase con el controlador del valorador.
 
-    Argumentos:
+    Argumentos constructor:
         model: objeto de la clase ValoradorModel.
         view: objeto de la clase ValoradorView.
 

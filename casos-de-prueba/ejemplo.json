@@ -6,7 +6,8 @@
       {
         "nombre": "Criterio 1",
         "descripcion": "Descripcion del criterio 1",
-        "tipo": "Booleano"
+        "tipo": "Booleano",
+        "valor_deseado": true
       },
       {
         "nombre": "Criterio 2",
