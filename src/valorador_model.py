@@ -71,9 +71,9 @@ class Caso(object):
         """
         Devuelve la representación en string del objecto (para usar con print).
         """
-        return "- Nombre: " + str(self.nombre) + \
-               "\n- Descripcion: " + str(self.descripcion) + \
-               "\n- Numero de criterios: " + str(len(self.criterios))
+        return (u"- Nombre: " + unicode(self.nombre) +
+                u"\n- Descripción: " + unicode(self.descripcion) +
+                u"\n- Número de criterios: " + str(len(self.criterios)))
 
     def load_from_JSON_file(self, file_path):
         """
@@ -119,12 +119,12 @@ class Caso(object):
                     self.criterios.append(x)
         except:
             self._full_reset()
-            raise IOError("El fichero JSON no tiene el formato correcto")
+            raise IOError(u"El fichero JSON no tiene el formato correcto")
 
         # Comprobamos que todos los criterios se han cargado
         if (len(self.criterios) != len(parsed_json['caso']['criterios'])):
             self._full_reset()
-            raise IOError("El fichero JSON no tiene el formato correcto")
+            raise IOError(u"El fichero JSON no tiene el formato correcto")
 
     def _parse_JSON_file(self, file_path):
         """
@@ -141,7 +141,7 @@ class Caso(object):
                 parsed_json = json.load(f)
                 f.close()
         except:
-            raise IOError("Error al abrir el fichero JSON")
+            raise IOError(u"Error al abrir el fichero JSON")
 
         return parsed_json
 
@@ -171,21 +171,20 @@ class Caso(object):
         actualiza el atributo explicacion con la explicación del resultado.
         """
         result = True
-        self._explicacion = ""
+        self._explicacion = u""
         i = 1
         n_criterios = len(self.criterios)
 
         for criterio in self.criterios:
-            self._explicacion += "Criterio " + \
-                                 str(i) + "/" + str(n_criterios) + "\n"
-            self._explicacion += str(criterio)
-            self._explicacion += "\n==> Valor introducido: " + \
-                str(criterio.valor)
+            self._explicacion += (u"Criterio " + str(i) + u"/" + str(n_criterios)
+                                  + u"\n" + unicode(criterio)
+                                  + u"\n==> Valor introducido: "
+                                  + unicode(criterio.valor))
 
             if(criterio.valorar()):
-                self._explicacion += "\n==> Valoracion: APROBADO\n\n"
+                self._explicacion += u"\n==> Valoración: APROBADO\n\n"
             else:
-                self._explicacion += "\n==> Valoracion: RECHAZADO\n\n"
+                self._explicacion += u"\n==> Valoración: RECHAZADO\n\n"
                 result = False
 
             i += 1
@@ -264,9 +263,9 @@ class Criterio(object):
         """
         Devuelve la representación en string del objecto (para usar con print).
         """
-        return "- Nombre: " + str(self.nombre) + \
-               "\n- Descripcion: " + str(self.descripcion) + \
-               "\n- Tipo: " + str(self.tipo)
+        return (u"- Nombre: " + unicode(self.nombre) +
+                u"\n- Descripción: " + unicode(self.descripcion) +
+                u"\n- Tipo: " + unicode(self.tipo))
 
     def valorar(self):
         """
@@ -311,7 +310,7 @@ class CriterioBooleano(Criterio):
         super(CriterioBooleano, self).__init__(nombre, descripcion)
 
         if (not isinstance(valor_deseado, bool)):
-            raise TypeError("El valor introducido debe ser un booleano")
+            raise TypeError(u"El valor introducido debe ser un booleano")
 
         self._valor_deseado = valor_deseado
 
@@ -349,8 +348,8 @@ class CriterioBooleano(Criterio):
         """
         Devuelve la representación en string del objecto (para usar con print).
         """
-        return super(CriterioBooleano, self).__str__() + \
-            "\n- Valor deseado: " + str(self.valor_deseado)
+        return (super(CriterioBooleano, self).__str__() +
+                u"\n- Valor deseado: " + str(self.valor_deseado))
 
     def valorar(self):
         """
@@ -361,7 +360,7 @@ class CriterioBooleano(Criterio):
                           poder ser valorado.
         """
         if(self.valor is None):
-            raise RuntimeError("El criterio debe tener un valor asignado")
+            raise RuntimeError(u"El criterio debe tener un valor asignado")
 
         return (self.valor == self.valor_deseado)
 
@@ -399,9 +398,9 @@ class CriterioPorcentaje(Criterio):
         super(CriterioPorcentaje, self).__init__(nombre, descripcion)
 
         if(valor_minimo < 0 or valor_minimo > 1):
-            raise ValueError("El valor introducido debe estar entre 0 y 1")
+            raise ValueError(u"El valor introducido debe estar entre 0 y 1")
         if(valor_maximo < 0 or valor_maximo > 1):
-            raise ValueError("El valor introducido debe estar entre 0 y 1")
+            raise ValueError(u"El valor introducido debe estar entre 0 y 1")
 
         self._valor_minimo = valor_minimo
         self._valor_maximo = valor_maximo
@@ -418,7 +417,7 @@ class CriterioPorcentaje(Criterio):
             ValueError: El argumento valor_minimo debe estar entre 0 y 1.
         """
         if (valor < 0 or valor > 1):
-            raise ValueError("El valor introducido debe estar entre 0 y 1")
+            raise ValueError(u"El valor introducido debe estar entre 0 y 1")
 
         self._valor = valor
 
@@ -447,9 +446,9 @@ class CriterioPorcentaje(Criterio):
         """
         Devuelve la representación en string del objecto (para usar con print).
         """
-        return super(CriterioPorcentaje, self).__str__() + \
-            "\n- Valor minimo: " + str(self.valor_minimo) + \
-            "\n- Valor maximo: " + str(self.valor_maximo)
+        return (super(CriterioPorcentaje, self).__str__() +
+                u"\n- Valor mínimo: " + str(self.valor_minimo) +
+                u"\n- Valor máximo: " + str(self.valor_maximo))
 
     def valorar(self):
         """
@@ -460,7 +459,7 @@ class CriterioPorcentaje(Criterio):
                           poder ser valorado.
         """
         if(self.valor is None):
-            raise RuntimeError("El criterio debe tener un valor asignado")
+            raise RuntimeError(u"El criterio debe tener un valor asignado")
 
         return (self.valor >= self.valor_minimo and
                 self.valor <= self.valor_maximo)
@@ -493,9 +492,9 @@ class CriterioEntero(Criterio):
         super(CriterioEntero, self).__init__(nombre, descripcion)
 
         if (not isinstance(valor_minimo, int)):
-            raise TypeError("El valor introducido debe ser un entero")
+            raise TypeError(u"El valor introducido debe ser un entero")
         if (not isinstance(valor_maximo, int)):
-            raise TypeError("El valor introducido debe ser un entero")
+            raise TypeError(u"El valor introducido debe ser un entero")
 
         self._valor_minimo = valor_minimo
         self._valor_maximo = valor_maximo
@@ -509,7 +508,7 @@ class CriterioEntero(Criterio):
             TypeError: El argumento valor debe ser un entero.
         """
         if (not isinstance(valor, int)):
-            raise TypeError("El valor introducido debe ser un entero")
+            raise TypeError(u"El valor introducido debe ser un entero")
 
         self._valor = valor
 
@@ -538,9 +537,9 @@ class CriterioEntero(Criterio):
         """
         Devuelve la representación en string del objecto (para usar con print).
         """
-        return super(CriterioEntero, self).__str__() + \
-            "\n- Valor minimo: " + str(self.valor_minimo) + \
-            "\n- Valor maximo: " + str(self.valor_maximo)
+        return (super(CriterioEntero, self).__str__() +
+                u"\n- Valor mínimo: " + str(self.valor_minimo) +
+                u"\n- Valor máximo: " + str(self.valor_maximo))
 
     def valorar(self):
         """
@@ -561,7 +560,7 @@ if __name__ == "__main__":
     """
     En caso de que intentemos ejecutar este módulo.
     """
-    print("Este módulo no debería ser ejecutado", file=sys.stderr)
+    print(u"Este módulo no debería ser ejecutado", file=sys.stderr)
 
     # TODO: Eliminar todo esto cuando acabemos con las pruebas
 
@@ -574,7 +573,7 @@ if __name__ == "__main__":
     caso.criterios[2].valor = 10000
 
     print("\n")
-    print(caso)
+    print(unicode(caso))
 
     print("\n")
     print("VALORACIÓN CASO: " + str(caso.valorar()))
