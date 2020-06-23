@@ -415,7 +415,7 @@ class MessageBoxes():
 
         TODO: Modificar para que permita especificar la extensión del archivo a abrir
         """
-        return QtGui.QFileDialog.getOpenFileName(parent, u"Abrir fichero")
+        return unicode(QtGui.QFileDialog.getOpenFileName(parent, u"Abrir fichero"))
 
 
 if __name__ == "__main__":
