@@ -580,5 +580,3 @@ if __name__ == "__main__":
 
     print("\n")
     print(caso.explicacion)
-
-    execfile('src/valorador.py')  # TODO: Eliminar esto

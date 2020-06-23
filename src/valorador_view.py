@@ -87,9 +87,9 @@ class ValoradorWidget(QtGui.QWidget):
 
     def __init__(self):
         super(ValoradorWidget, self).__init__()
-        self._initUI()
+        self._init_UI()
 
-    def _initUI(self):
+    def _init_UI(self):
         """
         Inicialización de la interfaz.
         """
@@ -311,9 +311,9 @@ class ValoradorMainWindow(QtGui.QMainWindow):
 
         self.valorador_Widget = valorador_Widget
 
-        self._initUI()
+        self._init_UI()
 
-    def _initUI(self):
+    def _init_UI(self):
         """
         Inicialización de la interfaz.
         """
@@ -354,33 +354,33 @@ class MessageBoxes():
     """
 
     @staticmethod
-    def showErrorMessage(errorText):
+    def show_error_message(error_text):
         """
         Muestra una ventana emergente de error con el mensaje indicado en
-        el argumento errorText.
+        el argumento error_text.
         """
         msg = QtGui.QMessageBox()
         msg.setWindowTitle(u"Error")
         msg.setIcon(QtGui.QMessageBox.Critical)
-        msg.setText(errorText)
+        msg.setText(error_text)
         msg.exec_()
 
     @staticmethod
-    def showInfoMessage(infoText):
+    def show_info_message(info_text):
         """
         Muestra una ventana emergente de información con el mensaje indicado en
-        el argumento infoText.
+        el argumento info_text.
 
         TODO: Eliminar método si no lo uso
         """
         msg = QtGui.QMessageBox()
         msg.setWindowTitle(u"Información")
         msg.setIcon(QtGui.QMessageBox.Information)
-        msg.setText(infoText)
+        msg.setText(info_text)
         msg.exec_()
 
     @staticmethod
-    def confirmOperationMessage(infoText):
+    def confirm_operation_message(info_text):
         """
         Muestra una ventana emergente de advertencia para confirmar que el
         usuario desea continuar con la operación.
@@ -393,7 +393,7 @@ class MessageBoxes():
         msg = QtGui.QMessageBox()
         msg.setWindowTitle(u"Advertencia")
         msg.setIcon(QtGui.QMessageBox.Warning)
-        msg.setText(infoText)
+        msg.setText(info_text)
         msg.setStandardButtons(QtGui.QMessageBox.Ok | QtGui.QMessageBox.Cancel)
         retval = msg.exec_()
 
@@ -403,7 +403,7 @@ class MessageBoxes():
             return False
 
     @staticmethod
-    def openFileDialog(parent):
+    def open_file_dialog(parent):
         """
         Muestra una ventana de diálogo para seleccionar el fichero a abrir.
 
@@ -423,5 +423,3 @@ if __name__ == "__main__":
     En caso de que intentemos ejecutar este módulo.
     """
     print(u"Este módulo no debería ser ejecutado", file=sys.stderr)
-
-    execfile('src/valorador.py')  # TODO: Eliminar esto

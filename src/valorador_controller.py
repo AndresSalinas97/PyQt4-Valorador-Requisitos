@@ -30,24 +30,24 @@ class ValoradorController():
         self.model = model
         self.view = view
 
-        self._initModel()
-        self._initView()
-        self._initController()
+        self._init_model()
+        self._init_view()
+        self._init_controller()
 
-    def _initModel(self):
+    def _init_model(self):
         """
         Inicializa el modelo.
         """
         pass
 
-    def _initView(self):
+    def _init_view(self):
         """
         Inicializa la vista.
         """
-        self._updateView()
+        self._update_view()
         self.view.show()
 
-    def _initController(self):
+    def _init_controller(self):
         """
         Inicializa el controlador.
 
@@ -55,7 +55,7 @@ class ValoradorController():
         """
         pass
 
-    def _updateView(self):
+    def _update_view(self):
         """
         Actualiza la vista.
         """
@@ -67,5 +67,3 @@ if __name__ == "__main__":
     En caso de que intentemos ejecutar este módulo.
     """
     print(u"Este módulo no debería ser ejecutado", file=sys.stderr)
-
-    execfile('src/valorador.py')  # TODO: Eliminar esto
