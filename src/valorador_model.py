@@ -17,15 +17,21 @@ import json
 class ValoradorModel():
     """
     Clase con el modelo del valorador.
+
+    Atributos/Propiedades:
+        caso: El caso a valorar
     """
-    pass
+
+    def __init__(self):
+        self.caso = Caso()
+        self.opened_file_path = u""
 
 
 class Caso(object):
     """
     Representa un caso (contiene los criterios a valorar).
 
-    Atributos/propiedades:
+    Atributos/Propiedades:
         nombre: String con el nombre del caso.
         descripcion: String con la descripción del caso.
         explicacion: String con la explicación del resultado de la valoración.
@@ -34,9 +40,9 @@ class Caso(object):
     """
 
     def __init__(self):
-        self._nombre = None
-        self._descripcion = None
-        self._explicacion = None
+        self._nombre = ""
+        self._descripcion = ""
+        self._explicacion = ""
         self._criterios = []
 
     @property
@@ -150,17 +156,17 @@ class Caso(object):
         Reinicializa el caso completamente (elimina todo, incluido los
         criterios).
         """
-        self._nombre = None
-        self._descripcion = None
+        self._nombre = ""
+        self._descripcion = ""
         self._criterios = []
-        self._explicacion = None
+        self._explicacion = ""
 
     def reset(self):
         """
         Reinicializa el caso (elimina la explicación y el valor de los
         criterios).
         """
-        self._explicacion = None
+        self._explicacion = ""
 
         for criterio in self.criterios:
             criterio.reset()
@@ -170,10 +176,15 @@ class Caso(object):
         Evalúa todos los criterios, devuelve el resultado de la valoración y
         actualiza el atributo explicacion con la explicación del resultado.
         """
+        n_criterios = len(self.criterios)
+
+        if(n_criterios == 0):
+            raise RuntimeError(
+                u"El caso debe tener al menos un criterio para poder ser valorado")
+
         result = True
         self._explicacion = u""
         i = 1
-        n_criterios = len(self.criterios)
 
         for criterio in self.criterios:
             self._explicacion += (u"Criterio " + str(i) + u"/" + str(n_criterios)
@@ -360,7 +371,8 @@ class CriterioBooleano(Criterio):
                           poder ser valorado.
         """
         if(self.valor is None):
-            raise RuntimeError(u"El criterio debe tener un valor asignado")
+            raise RuntimeError(u"El criterio \"" + self.nombre +
+                               "\" debe tener un valor asignado!")
 
         return (self.valor == self.valor_deseado)
 
@@ -459,7 +471,8 @@ class CriterioPorcentaje(Criterio):
                           poder ser valorado.
         """
         if(self.valor is None):
-            raise RuntimeError(u"El criterio debe tener un valor asignado")
+            raise RuntimeError(u"El criterio \"" + self.nombre +
+                               "\" debe tener un valor asignado!")
 
         return (self.valor >= self.valor_minimo and
                 self.valor <= self.valor_maximo)
@@ -550,7 +563,8 @@ class CriterioEntero(Criterio):
                           poder ser valorado.
         """
         if(self.valor is None):
-            raise RuntimeError("El criterio debe tener un valor asignado")
+            raise RuntimeError(u"El criterio \"" + self.nombre +
+                               "\" debe tener un valor asignado!")
 
         return (self.valor >= self.valor_minimo and
                 self.valor <= self.valor_maximo)
@@ -561,22 +575,3 @@ if __name__ == "__main__":
     En caso de que intentemos ejecutar este módulo.
     """
     print(u"Este módulo no debería ser ejecutado", file=sys.stderr)
-
-    # TODO: Eliminar todo esto cuando acabemos con las pruebas
-
-    caso = Caso()
-
-    caso.load_from_JSON_file("casos-de-prueba/ejemplo.json")
-
-    caso.criterios[0].valor = True
-    caso.criterios[1].valor = 0.5
-    caso.criterios[2].valor = 10000
-
-    print("\n")
-    print(unicode(caso))
-
-    print("\n")
-    print("VALORACIÓN CASO: " + str(caso.valorar()))
-
-    print("\n")
-    print(caso.explicacion)
