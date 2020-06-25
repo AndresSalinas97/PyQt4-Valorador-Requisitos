@@ -46,7 +46,7 @@ class ValoradorController():
         """
         Inicializa la vista.
         """
-        self._update_caso_fields()
+        self._update_entire_UI()
         self._view.show()
 
     def _init_controller(self):
@@ -87,25 +87,15 @@ class ValoradorController():
             try:
                 self._caso.load_from_JSON_file(file_path)
                 self._model.opened_file_path = file_path
-                self._update_caso_fields()
-                self._load_criterios()
-
+                self._update_entire_UI()
                 ValoradorMessageBoxes.show_info_message(
                     u"Archivo cargado con éxito")
             except Exception as e:
+                self._update_entire_UI()
                 if hasattr(e, 'message'):
                     ValoradorMessageBoxes.show_error_message(e.message)
                 else:
                     ValoradorMessageBoxes.show_error_message(unicode(e))
-
-    def _load_criterios(self):
-        """
-        Carga los criterios del caso en la lista de criterios de la vista.
-        """
-        self._main_widget.criterios_List.clear()
-
-        for criterio in self._caso.criterios:
-            self._main_widget.criterios_List.addItem(criterio.nombre)
 
     def _valorar_caso(self):
         """
@@ -113,13 +103,13 @@ class ValoradorController():
         """
         try:
             valoracion_result = self._caso.valorar()
+            self._update_valoracion_fields(valoracion_result)
         except Exception as e:
+            self._clean_valoracion_fields()
             if hasattr(e, 'message'):
                 ValoradorMessageBoxes.show_error_message(e.message)
             else:
                 ValoradorMessageBoxes.show_error_message(unicode(e))
-
-        self._update_valoracion_fields(valoracion_result)
 
     def _reset_caso(self):
         """
@@ -141,28 +131,43 @@ class ValoradorController():
         """
         pass  # TODO: Implementar
 
+    def _update_entire_UI(self):
+        """
+        Actualiza todos los campos de la interfaz.
+        """
+        self._update_caso_fields()
+        self._update_criterio_fields()
+        self._update_criterios_list()
+        self._clean_valoracion_fields()
+
     def _update_caso_fields(self):
         """
-        TODO: Documentar
+        Actualiza los campos de la interfaz con la ruta y la descripión del caso.
         """
         self._main_widget.ruta_caso_LineEdit.setText(
             self._model.opened_file_path)
 
         self._main_widget.desc_caso_TextEdit.setText(unicode(self._caso))
 
-        self._update_criterio_fields()
+    def _update_criterios_list(self):
+        """
+        Carga los criterios del caso en la lista de criterios de la interfaz.
+        """
+        self._main_widget.criterios_List.clear()
 
-        self._clean_valoracion_fields()  # TODO: Valorar
+        for criterio in self._caso.criterios:
+            self._main_widget.criterios_List.addItem(criterio.nombre)
 
     def _update_criterio_fields(self):
         """
-        Actualiza la vista con los datos del criterio seleccionado.
+        Actualiza la vista con la descripción y el valor del criterio
+        seleccionado.
         """
         QList = self._main_widget.criterios_List
 
         selected_items = QList.selectedItems()
 
-        if(len(selected_items) == 1):
+        if(len(selected_items) == 1 and len(self._caso.criterios) > 0):
             selected_item_index = QList.indexFromItem(selected_items[0]).row()
 
             selected_criterio = self._caso.criterios[selected_item_index]
@@ -213,7 +218,7 @@ class ValoradorController():
 
     def _clean_valoracion_fields(self):
         """
-        TODO: Documentar
+        Limpia los campos valoración y explicación de la vista.
         """
         self._main_widget.valoracion_LineEdit.setText("")
 
