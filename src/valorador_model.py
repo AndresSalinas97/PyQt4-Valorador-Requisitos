@@ -193,14 +193,14 @@ class Caso(object):
 
         for criterio in self.criterios:
             self._explicacion += (
-                u"* Criterio " + str(i) + u"/" + str(n_criterios) + u" *\n"
+                u"*** Criterio " + str(i) + u"/" + str(n_criterios) + u" ***\n"
                 + unicode(criterio)
-                + u"\n  ==> VALOR INTRODUCIDO: " + unicode(criterio.valor))
+                + u"\n* VALOR INTRODUCIDO: " + unicode(criterio.valor))
 
             if(criterio.valorar()):
-                self._explicacion += u"\n  ==> VALORACIÓN: *** APROBADO ***\n\n"
+                self._explicacion += u"\n===> APROBADO <===\n\n"
             else:
-                self._explicacion += u"\n  ==> VALORACIÓN: *** RECHAZADO ***\n\n"
+                self._explicacion += u"\n===> RECHAZADO <===\n\n"
                 result = False
 
             i += 1

@@ -152,13 +152,13 @@ class ValoradorWidget(QtGui.QWidget):
 
         ##### Campos para los distintos tipos del valor del criterio #####
         self.valor_int_LineEdit = QtGui.QLineEdit()
-        self.valor_int_LineEdit.setValidator(QtGui.QIntValidator())
+        # self.valor_int_LineEdit.setValidator(QtGui.QIntValidator())
         self.valor_int_LineEdit.setStatusTip(
             u"Valor del criterio seleccionado (número entero)")
 
         self.valor_double_LineEdit = QtGui.QLineEdit()
-        self.valor_double_LineEdit.setValidator(
-            QtGui.QDoubleValidator(0, 1, 4, self.valor_double_LineEdit))
+        # self.valor_double_LineEdit.setValidator(
+        #     QtGui.QDoubleValidator(0, 1, 4, self.valor_double_LineEdit))
         self.valor_double_LineEdit.setVisible(False)
         self.valor_double_LineEdit.setStatusTip(
             u"Valor del criterio seleccionado " +

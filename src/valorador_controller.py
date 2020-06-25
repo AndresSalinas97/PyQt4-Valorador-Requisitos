@@ -37,10 +37,8 @@ class ValoradorController():
     def _init_model(self):
         """
         Inicializa el modelo.
-
-        TODO: Valorar eliminar este método si no se usa
         """
-        pass  # TODO: Implementar
+        pass
 
     def _init_view(self):
         """
@@ -55,22 +53,34 @@ class ValoradorController():
 
         Conecta los botones y acciones de la vista con métodos del controlador.
         """
-        self._main_widget.abrir_Button.clicked.connect(self._load_caso)
+        self._main_widget.abrir_Button.clicked.connect(
+            self._load_caso)
 
         self._main_widget.valorar_Button.clicked.connect(
             self._valorar_caso)
 
-        self._main_widget.reset_Button.clicked.connect(self._reset_caso)
+        self._main_widget.reset_Button.clicked.connect(
+            self._reset_caso)
 
         self._main_window.exit_Action.triggered.connect(
             QtGui.qApp.closeAllWindows)
 
-        self._main_window.open_file_Action.triggered.connect(self._load_caso)
+        self._main_window.open_file_Action.triggered.connect(
+            self._load_caso)
 
         self._main_widget.criterios_List.itemClicked.connect(
             self._update_criterio_fields)
+        self._main_widget.criterios_List.currentItemChanged.connect(
+            self._update_criterio_fields)
 
-        # TODO: Terminar
+        self._main_widget.valor_int_LineEdit.editingFinished.connect(
+            self._set_valor_criterio)
+
+        self._main_widget.valor_double_LineEdit.editingFinished.connect(
+            self._set_valor_criterio)
+
+        self._main_widget.valor_ComboBox.activated.connect(
+            self._set_valor_criterio)
 
     def _load_caso(self):
         """
@@ -92,10 +102,8 @@ class ValoradorController():
                     u"Archivo cargado con éxito")
             except Exception as e:
                 self._update_entire_UI()
-                if hasattr(e, 'message'):
-                    ValoradorMessageBoxes.show_error_message(e.message)
-                else:
-                    ValoradorMessageBoxes.show_error_message(unicode(e))
+                ValoradorMessageBoxes.show_error_message(e.message)
+                return
 
     def _valorar_caso(self):
         """
@@ -106,10 +114,8 @@ class ValoradorController():
             self._update_valoracion_fields(valoracion_result)
         except Exception as e:
             self._clean_valoracion_fields()
-            if hasattr(e, 'message'):
-                ValoradorMessageBoxes.show_error_message(e.message)
-            else:
-                ValoradorMessageBoxes.show_error_message(unicode(e))
+            ValoradorMessageBoxes.show_error_message(e.message)
+            return
 
     def _reset_caso(self):
         """
@@ -127,9 +133,58 @@ class ValoradorController():
 
     def _set_valor_criterio(self):
         """
-        TODO: Documentar
+        Actualiza el valor del criterio seleccionado con el valor introducido.
         """
-        pass  # TODO: Implementar
+        QList = self._main_widget.criterios_List
+        selected_items = QList.selectedItems()
+        selected_item_index = QList.indexFromItem(selected_items[0]).row()
+        selected_criterio = self._caso.criterios[selected_item_index]
+
+        if(selected_criterio.tipo == "Booleano"):
+            try:
+                valor = self._main_widget.valor_ComboBox.currentText()
+                if(valor == "True"):
+                    valor = True
+                elif(valor == "False"):
+                    valor = False
+                else:
+                    valor = None
+                selected_criterio.valor = valor
+            except Exception as e:
+                ValoradorMessageBoxes.show_error_message(e.message)
+                self._update_criterio_fields()
+                return
+        elif(selected_criterio.tipo == "Porcentaje"):
+            try:
+                valor = float(self._main_widget.valor_double_LineEdit.text())
+            except Exception as e:
+                ValoradorMessageBoxes.show_error_message(
+                    u"Debe introducir un número decimal!")
+                self._update_criterio_fields()
+                return
+            try:
+                selected_criterio.valor = valor
+            except Exception as e:
+                ValoradorMessageBoxes.show_error_message(e.message)
+                self._update_criterio_fields()
+                return
+        elif(selected_criterio.tipo == "Entero"):
+            try:
+                valor = int(self._main_widget.valor_int_LineEdit.text())
+            except Exception as e:
+                ValoradorMessageBoxes.show_error_message(
+                    u"Debe introducir un número entero!")
+                self._update_criterio_fields()
+                return
+            try:
+                selected_criterio.valor = valor
+            except Exception as e:
+                ValoradorMessageBoxes.show_error_message(e.message)
+                self._update_criterio_fields()
+                return
+
+        self._update_criterio_fields()
+        self._clean_valoracion_fields()
 
     def _update_entire_UI(self):
         """
@@ -212,9 +267,15 @@ class ValoradorController():
 
     def _update_valoracion_fields(self, valoracion_result):
         """
-        TODO: Documentar
+        Actualiza los campos de la interfaz con el resultado y la explicación
+        de la valoración del caso.
         """
-        pass  # TODO: Implementar
+        if(valoracion_result == True):
+            self._main_widget.valoracion_LineEdit.setText("APROBADO")
+        else:
+            self._main_widget.valoracion_LineEdit.setText("RECHAZADO")
+
+        self._main_widget.explicacion_TextEdit.setText(self._caso.explicacion)
 
     def _clean_valoracion_fields(self):
         """
