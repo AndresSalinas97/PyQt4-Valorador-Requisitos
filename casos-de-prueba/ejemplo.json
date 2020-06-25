@@ -1,7 +1,7 @@
 {
   "caso": {
-    "nombre": "Nombre del caso",
-    "descripcion": "Descripción del caso",
+    "nombre": "Caso de ejemplo",
+    "descripcion": "Descripción del caso de ejemplo",
     "criterios": [
       {
         "nombre": "Criterio tipo Booleano",
