@@ -77,9 +77,9 @@ class Caso(object):
         """
         Devuelve la representación en string del objecto (para usar con print).
         """
-        return (u"- Nombre: " + unicode(self.nombre) +
-                u"\n- Descripción: " + unicode(self.descripcion) +
-                u"\n- Número de criterios: " + str(len(self.criterios)))
+        return (u"- NOMBRE: " + unicode(self.nombre) +
+                u"\n- DESCRIPCIÓN: " + unicode(self.descripcion) +
+                u"\n- NÚMERO DE CRITERIOS: " + str(len(self.criterios)))
 
     def load_from_JSON_file(self, file_path):
         """
@@ -125,12 +125,12 @@ class Caso(object):
                     self.criterios.append(x)
         except:
             self._full_reset()
-            raise IOError(u"El fichero JSON no tiene el formato correcto")
+            raise IOError(u"El fichero JSON no tiene el formato correcto!")
 
         # Comprobamos que todos los criterios se han cargado
         if (len(self.criterios) != len(parsed_json['caso']['criterios'])):
             self._full_reset()
-            raise IOError(u"El fichero JSON no tiene el formato correcto")
+            raise IOError(u"El fichero JSON no tiene el formato correcto!")
 
     def _parse_JSON_file(self, file_path):
         """
@@ -147,7 +147,7 @@ class Caso(object):
                 parsed_json = json.load(f)
                 f.close()
         except:
-            raise IOError(u"Error al abrir el fichero JSON")
+            raise IOError(u"Error al abrir el fichero JSON!")
 
         return parsed_json
 
@@ -175,27 +175,32 @@ class Caso(object):
         """
         Evalúa todos los criterios, devuelve el resultado de la valoración y
         actualiza el atributo explicacion con la explicación del resultado.
+
+        Excepciones:
+            RuntimeError: El caso debe tener al menos un criterio para poder ser
+            valorado.
         """
         n_criterios = len(self.criterios)
 
         if(n_criterios == 0):
             raise RuntimeError(
-                u"El caso debe tener al menos un criterio para poder ser valorado")
+                u"El caso debe tener al menos un criterio para poder ser "
+                "valorado!")
 
         result = True
         self._explicacion = u""
         i = 1
 
         for criterio in self.criterios:
-            self._explicacion += (u"Criterio " + str(i) + u"/" + str(n_criterios)
-                                  + u"\n" + unicode(criterio)
-                                  + u"\n==> Valor introducido: "
-                                  + unicode(criterio.valor))
+            self._explicacion += (
+                u"* Criterio " + str(i) + u"/" + str(n_criterios) + u" *\n"
+                + unicode(criterio)
+                + u"\n  ==> VALOR INTRODUCIDO: " + unicode(criterio.valor))
 
             if(criterio.valorar()):
-                self._explicacion += u"\n==> Valoración: APROBADO\n\n"
+                self._explicacion += u"\n  ==> VALORACIÓN: *** APROBADO ***\n\n"
             else:
-                self._explicacion += u"\n==> Valoración: RECHAZADO\n\n"
+                self._explicacion += u"\n  ==> VALORACIÓN: *** RECHAZADO ***\n\n"
                 result = False
 
             i += 1
@@ -274,9 +279,9 @@ class Criterio(object):
         """
         Devuelve la representación en string del objecto (para usar con print).
         """
-        return (u"- Nombre: " + unicode(self.nombre) +
-                u"\n- Descripción: " + unicode(self.descripcion) +
-                u"\n- Tipo: " + unicode(self.tipo))
+        return (u"- NOMBRE: " + unicode(self.nombre) +
+                u"\n- DESCRIPCIÓN: " + unicode(self.descripcion) +
+                u"\n- TIPO: " + unicode(self.tipo))
 
     def valorar(self):
         """
@@ -321,7 +326,7 @@ class CriterioBooleano(Criterio):
         super(CriterioBooleano, self).__init__(nombre, descripcion)
 
         if (not isinstance(valor_deseado, bool)):
-            raise TypeError(u"El valor introducido debe ser un booleano")
+            raise TypeError(u"El valor introducido debe ser un booleano!")
 
         self._valor_deseado = valor_deseado
 
@@ -337,7 +342,7 @@ class CriterioBooleano(Criterio):
             TypeError: El argumento valor debe ser un booleano.
         """
         if (not isinstance(valor, bool)):
-            raise TypeError("El valor introducido debe ser un booleano")
+            raise TypeError("El valor introducido debe ser un booleano!")
 
         self._valor = valor
 
@@ -360,7 +365,7 @@ class CriterioBooleano(Criterio):
         Devuelve la representación en string del objecto (para usar con print).
         """
         return (super(CriterioBooleano, self).__str__() +
-                u"\n- Valor deseado: " + str(self.valor_deseado))
+                u"\n- VALOR DESEADO: " + str(self.valor_deseado))
 
     def valorar(self):
         """
@@ -410,9 +415,9 @@ class CriterioPorcentaje(Criterio):
         super(CriterioPorcentaje, self).__init__(nombre, descripcion)
 
         if(valor_minimo < 0 or valor_minimo > 1):
-            raise ValueError(u"El valor introducido debe estar entre 0 y 1")
+            raise ValueError(u"El valor introducido debe estar entre 0 y 1!")
         if(valor_maximo < 0 or valor_maximo > 1):
-            raise ValueError(u"El valor introducido debe estar entre 0 y 1")
+            raise ValueError(u"El valor introducido debe estar entre 0 y 1!")
 
         self._valor_minimo = valor_minimo
         self._valor_maximo = valor_maximo
@@ -429,7 +434,7 @@ class CriterioPorcentaje(Criterio):
             ValueError: El argumento valor_minimo debe estar entre 0 y 1.
         """
         if (valor < 0 or valor > 1):
-            raise ValueError(u"El valor introducido debe estar entre 0 y 1")
+            raise ValueError(u"El valor introducido debe estar entre 0 y 1!")
 
         self._valor = valor
 
@@ -459,8 +464,8 @@ class CriterioPorcentaje(Criterio):
         Devuelve la representación en string del objecto (para usar con print).
         """
         return (super(CriterioPorcentaje, self).__str__() +
-                u"\n- Valor mínimo: " + str(self.valor_minimo) +
-                u"\n- Valor máximo: " + str(self.valor_maximo))
+                u"\n- VALOR MÍNIMO: " + str(self.valor_minimo) +
+                u"\n- VALOR MÁXIMO: " + str(self.valor_maximo))
 
     def valorar(self):
         """
@@ -505,9 +510,9 @@ class CriterioEntero(Criterio):
         super(CriterioEntero, self).__init__(nombre, descripcion)
 
         if (not isinstance(valor_minimo, int)):
-            raise TypeError(u"El valor introducido debe ser un entero")
+            raise TypeError(u"El valor introducido debe ser un entero!")
         if (not isinstance(valor_maximo, int)):
-            raise TypeError(u"El valor introducido debe ser un entero")
+            raise TypeError(u"El valor introducido debe ser un entero!")
 
         self._valor_minimo = valor_minimo
         self._valor_maximo = valor_maximo
@@ -521,7 +526,7 @@ class CriterioEntero(Criterio):
             TypeError: El argumento valor debe ser un entero.
         """
         if (not isinstance(valor, int)):
-            raise TypeError(u"El valor introducido debe ser un entero")
+            raise TypeError(u"El valor introducido debe ser un entero!")
 
         self._valor = valor
 
@@ -551,8 +556,8 @@ class CriterioEntero(Criterio):
         Devuelve la representación en string del objecto (para usar con print).
         """
         return (super(CriterioEntero, self).__str__() +
-                u"\n- Valor mínimo: " + str(self.valor_minimo) +
-                u"\n- Valor máximo: " + str(self.valor_maximo))
+                u"\n- VALOR MÍNIMO: " + str(self.valor_minimo) +
+                u"\n- VALOR MÁXIMO: " + str(self.valor_maximo))
 
     def valorar(self):
         """
