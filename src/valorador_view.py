@@ -64,26 +64,31 @@ class ValoradorWidget(QtGui.QWidget):
         criterios_List: QListWidget con la lista de criterios del caso.
     """
 
-    # Espacio vertical entre los elementos del grid layout
+    # Espacio vertical entre los elementos del grid layout.
     _VERTICAL_SPACING = 10
 
-    # Espacio horizontal entre los elementos del grid layout
+    # Espacio horizontal entre los elementos del grid layout.
     _HORIZONTAL_SPACING = 20
 
-    # Ancho mínimo de las columnas del grid layout
+    # Ancho mínimo de las columnas del grid layout.
     _COLUMN_0_MIN_WIDTH = 200
     _COLUMN_1_MIN_WIDTH = 250
     _COLUMN_2_MIN_WIDTH = 250
 
-    # Factor de estiramiento de las columnas del grid layout
+    # Factor de estiramiento de las columnas del grid layout.
     _COLUMN_0_STRETCH = 2
     _COLUMN_1_STRETCH = 3
     _COLUMN_2_STRETCH = 3
 
-    # Altura mínima de las final del grid layout
-    _ROW_1_MIN_HEIGHT = 100
+    # Altura mínima de las filas del grid layout.
+    _ROW_1_MIN_HEIGHT = 75
     _ROW_4_MIN_HEIGHT = 100
-    _ROW_8_MIN_HEIGHT = 100
+    _ROW_7_MIN_HEIGHT = 100
+
+    # Factor de estiramiento de las filas del grid layout.
+    _ROW_1_STRETCH = 1
+    _ROW_4_STRETCH = 3
+    _ROW_7_STRETCH = 6
 
     def __init__(self):
         super(ValoradorWidget, self).__init__()
@@ -255,7 +260,11 @@ class ValoradorWidget(QtGui.QWidget):
 
         grid.setRowMinimumHeight(1, self._ROW_1_MIN_HEIGHT)
         grid.setRowMinimumHeight(4, self._ROW_4_MIN_HEIGHT)
-        grid.setRowMinimumHeight(7, self._ROW_8_MIN_HEIGHT)
+        grid.setRowMinimumHeight(7, self._ROW_7_MIN_HEIGHT)
+
+        grid.setRowStretch(1, self._ROW_1_STRETCH)
+        grid.setRowStretch(4, self._ROW_4_STRETCH)
+        grid.setRowStretch(7, self._ROW_7_STRETCH)
 
         grid.addWidget(ruta_caso_label, 0, 0, 1, 2)
         grid.addWidget(desc_caso_label, 0, 2, 1, 1)
