@@ -8,7 +8,7 @@ Autor: Andrés Salinas Lima <i52salia@uco.es>.
 """
 
 from __future__ import print_function
-from valorador_view import MessageBoxes
+from valorador_view import ValoradorMessageBoxes
 import sys
 import os
 import json

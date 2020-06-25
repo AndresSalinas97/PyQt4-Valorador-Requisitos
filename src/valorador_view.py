@@ -347,7 +347,7 @@ class ValoradorMainWindow(QtGui.QMainWindow):
         self.setWindowTitle(u"Valorador")
 
 
-class MessageBoxes():
+class ValoradorMessageBoxes():
     """
     Contiene métodos para mostrar mensajes emergentes y ventanas de diálogo
     para abrir/guardar ficheros/directorios.
@@ -403,7 +403,7 @@ class MessageBoxes():
             return False
 
     @staticmethod
-    def open_file_dialog(parent):
+    def open_file_dialog(parent, selectedFilter=""):
         """
         Muestra una ventana de diálogo para seleccionar el fichero a abrir.
 
@@ -415,7 +415,8 @@ class MessageBoxes():
 
         TODO: Modificar para que permita especificar la extensión del archivo a abrir
         """
-        return unicode(QtGui.QFileDialog.getOpenFileName(parent, u"Abrir fichero"))
+        return unicode(QtGui.QFileDialog.getOpenFileName(
+            parent, u"Abrir fichero", ".", selectedFilter))
 
 
 if __name__ == "__main__":
