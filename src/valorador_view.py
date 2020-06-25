@@ -102,8 +102,8 @@ class ValoradorWidget(QtGui.QWidget):
         big_bold_font.setPointSize(40)
 
         ##### Etiquetas #####
-        caso_label = QtGui.QLabel(u"Caso")
-        caso_label.setFont(bold_font)
+        ruta_caso_label = QtGui.QLabel(u"Caso")
+        ruta_caso_label.setFont(bold_font)
 
         desc_caso_label = QtGui.QLabel(u"Descripción del Caso")
         desc_caso_label.setFont(bold_font)
@@ -165,9 +165,7 @@ class ValoradorWidget(QtGui.QWidget):
             u"(porcentaje expresado con un número decimal entre 0.0 y 1.0)")
 
         self.valor_ComboBox = QtGui.QComboBox()
-        self.valor_ComboBox.addItem(u"None")
-        self.valor_ComboBox.addItem(u"True")
-        self.valor_ComboBox.addItem(u"False")
+        self.valor_ComboBox.addItems([u"None", u"True", u"False"])
         self.valor_ComboBox.setVisible(False)
         self.valor_ComboBox.setStatusTip(
             u"Valor del criterio seleccionado (True o False)")
@@ -259,7 +257,7 @@ class ValoradorWidget(QtGui.QWidget):
         grid.setRowMinimumHeight(4, self._ROW_4_MIN_HEIGHT)
         grid.setRowMinimumHeight(7, self._ROW_8_MIN_HEIGHT)
 
-        grid.addWidget(caso_label, 0, 0, 1, 2)
+        grid.addWidget(ruta_caso_label, 0, 0, 1, 2)
         grid.addWidget(desc_caso_label, 0, 2, 1, 1)
 
         grid.addWidget(ruta_caso_Layout_Widget, 1, 0, 1, 2)
@@ -370,8 +368,6 @@ class ValoradorMessageBoxes():
         """
         Muestra una ventana emergente de información con el mensaje indicado en
         el argumento info_text.
-
-        TODO: Eliminar método si no lo uso
         """
         msg = QtGui.QMessageBox()
         msg.setWindowTitle(u"Información")
@@ -387,8 +383,6 @@ class ValoradorMessageBoxes():
 
         Devuelve:
             True si el usuario hace click en Ok; False en caso contrario.
-
-        TODO: Eliminar método si no lo uso
         """
         msg = QtGui.QMessageBox()
         msg.setWindowTitle(u"Advertencia")
@@ -412,8 +406,6 @@ class ValoradorMessageBoxes():
 
         Devuelve:
             String con la ruta del fichero seleccionado.
-
-        TODO: Modificar para que permita especificar la extensión del archivo a abrir
         """
         return unicode(QtGui.QFileDialog.getOpenFileName(
             parent, u"Abrir fichero", ".", selectedFilter))
