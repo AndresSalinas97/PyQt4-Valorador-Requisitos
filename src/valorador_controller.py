@@ -120,7 +120,7 @@ class ValoradorController():
     def _reset_caso(self):
         """
         Reinicializa los valores de los criterios y el resultado de la
-        valoración
+        valoración.
         """
         confirmation = ValoradorMessageBoxes.confirm_operation_message(
             u"Perderá todos los valores introducidos en los criterios..." +

@@ -365,6 +365,10 @@ class ValoradorMessageBoxes():
         """
         Muestra una ventana emergente de error con el mensaje indicado en
         el argumento error_text.
+
+        Argumentos:
+            error_text: String con el mensaje de error que se le mostrará al
+                        usuario.
         """
         msg = QtGui.QMessageBox()
         msg.setWindowTitle(u"Error")
@@ -377,6 +381,9 @@ class ValoradorMessageBoxes():
         """
         Muestra una ventana emergente de información con el mensaje indicado en
         el argumento info_text.
+
+        Argumentos:
+            info_text: String con el mensaje que se le mostrará al usuario.
         """
         msg = QtGui.QMessageBox()
         msg.setWindowTitle(u"Información")
@@ -389,6 +396,9 @@ class ValoradorMessageBoxes():
         """
         Muestra una ventana emergente de advertencia para confirmar que el
         usuario desea continuar con la operación.
+
+        Argumentos:
+            info_text: String con el mensaje que se le mostrará al usuario.
 
         Devuelve:
             True si el usuario hace click en Ok; False en caso contrario.
@@ -412,6 +422,8 @@ class ValoradorMessageBoxes():
 
         Argumentos:
             parent: QWidget padre.
+            selectedFilter: (opcional) Filtro con la extensión de los archivos
+                            que se mostrarán.
 
         Devuelve:
             String con la ruta del fichero seleccionado.

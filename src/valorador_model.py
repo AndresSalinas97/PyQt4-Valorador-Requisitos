@@ -19,12 +19,13 @@ class ValoradorModel():
     Clase con el modelo del valorador.
 
     Atributos/Propiedades:
-        caso: El caso a valorar
+        caso: El caso a valorar.
+        opened_file_path: String con la ruta del fichero de caso abierto.
     """
 
     def __init__(self):
         self.caso = Caso()
-        self.opened_file_path = u""
+        self.opened_file_path = ""
 
 
 class Caso(object):
