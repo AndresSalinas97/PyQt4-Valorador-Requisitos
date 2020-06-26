@@ -1,0 +1,34 @@
+{
+  "caso": {
+    "nombre": "Becas de colaboración del MECD para estudiantes de grado - Convocatoria 2019-2020",
+    "descripcion": "Becas del Ministerio de Educación, Cultura y Deporte destinadas a estudiantes universitarios para realizar tareas de investigación en departamentos universitarios.",
+    "criterios": [
+      {
+        "nombre": "Posesión de un título de grado",
+        "descripcion": "No estar en posesión o en disposición legal de obtener un título académico de Licenciado, Ingeniero, Arquitecto, Graduado o Máster oficial.",
+        "tipo": "Booleano",
+        "valor_deseado": false
+      },
+      {
+        "nombre": "Matriculado de la totalidad de créditos pendientes",
+        "descripcion": "Estar matriculado en el curso 2019-2020 en enseñanza oficial de la totalidad de las asignaturas o créditos que le resten para finalizar sus estudios.",
+        "tipo": "Booleano",
+        "valor_deseado": true
+      },
+      {
+        "nombre": "Porcentaje de carga lectiva superada",
+        "descripcion": "Los estudiantes de grado deberán encontrarse cursando los últimos créditos para completar los requisitos para la obtención del título, y haber superado el 75% de la carga lectiva.",
+        "tipo": "Porcentaje",
+        "valor_minimo": 0.75,
+        "valor_maximo": 1
+      },
+      {
+        "nombre": "Nota media de expediente",
+        "descripcion": "Tener como nota media de los créditos superados un mínimo de 7,25 puntos para la rama de Ingeniería y Arquitectura o Enseñanzas Técnicas.",
+        "tipo": "Numero",
+        "valor_minimo": 7.25,
+        "valor_maximo": 10
+      }
+    ]
+  }
+}
