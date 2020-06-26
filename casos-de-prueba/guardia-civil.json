@@ -1,0 +1,82 @@
+{
+  "caso": {
+    "nombre": "Requisitos para opositar a Guardia Civil",
+    "descripcion": "Requisitos que los aspirantes a Guardia Civil deberán reunir, en la fecha que finalice el plazo de admisión de instancias y mantener durante el proceso selectivo y los periodos de formación.",
+    "criterios": [
+      {
+        "nombre": "Nacionalidad Española",
+        "descripcion": "Poseer la nacionalidad española.",
+        "tipo": "Booleano",
+        "valor_deseado": true
+      },
+      {
+        "nombre": "Derechos civiles",
+        "descripcion": "No estar privado de los derechos civiles.",
+        "tipo": "Booleano",
+        "valor_deseado": true
+      },
+      {
+        "nombre": "Antecedentes penales",
+        "descripcion": "Carecer de antecedentes penales.",
+        "tipo": "Booleano",
+        "valor_deseado": false
+      },
+      {
+        "nombre": "Incurso en algún procedimiento judicial",
+        "descripcion": "No hallarse incurso en algún procedimiento judicial por delito doloso como procesado, investigado judicialmente o acusado con declaración de apertura de juicio oral correspondiente.",
+        "tipo": "Booleano",
+        "valor_deseado": false
+      },
+      {
+        "nombre": "Habilitado para el servicio de la administración pública",
+        "descripcion": "No haber sido separado mediante expediente disciplinario del servicio de cualquiera de las Administraciones Públicas ni hallarse inhabilitado con carácter firme para el ejercicio de funciones públicas.",
+        "tipo": "Booleano",
+        "valor_deseado": true
+      },
+      {
+        "nombre": "Edad",
+        "descripcion": "Tener cumplidos 18 años de edad en el año de la convocatoria y no tener cumplida ni cumplir durante el año de la convocatoria la edad de 41 años.",
+        "tipo": "Numero",
+        "valor_minimo": 18,
+        "valor_maximo": 41
+      },
+      {
+        "nombre": "Altura (en metros)",
+        "descripcion": "Se requiere una altura mínima de 1,65 metros en el caso de los hombres y de 1,60 en el caso de las mujeres. Del mismo modo tu altura no puede exceder de los 2,03 metros.",
+        "tipo": "Numero",
+        "valor_minimo": 1.6,
+        "valor_maximo": 2.03
+      },
+      {
+        "nombre": "Aptitud psicofísica",
+        "descripcion": "Poseer la aptitud psicofísica necesaria para cursar los respectivos planes de estudios, que será acreditada mediante la superación del reconocimiento y las pruebas que se determinen en cada convocatoria.",
+        "tipo": "Booleano",
+        "valor_deseado": true
+      },
+      {
+        "nombre": "Cumplir alguno de los requisitos de acceso a ciclos formativos de Formación Profesional de Grado Medio",
+        "descripcion": "Cumplir alguno de los requisitos de acceso requeridos en el Sistema Educativo Español para acceder a las enseñanzas conducentes a ciclos formativos de Formación Profesional de Grado Medio.",
+        "tipo": "Booleano",
+        "valor_deseado": true
+      },
+      {
+        "nombre": "Compromiso de portar armas y de su uso.",
+        "descripcion": "Adquirir el compromiso de portar armas y, en su caso, llegar a utilizarlas, conforme a los principios básicos de actuación de congruencia, oportunidad y proporcionalidad en la utilización de los medios a su alcance, que se prestará a través de declaración del solicitante.",
+        "tipo": "Booleano",
+        "valor_deseado": true
+      },
+      {
+        "nombre": "Poseer permiso de conducir del tipo B",
+        "descripcion": "Estar en posesión del permiso de conducción de la clase B.",
+        "tipo": "Booleano",
+        "valor_deseado": true
+      },
+      {
+        "nombre": "Poseer tatuajes conflictivos",
+        "descripcion": "Carecer de tatuajes que contengan expresiones o imágenes contrarias a los valores constitucionales, Autoridades o virtudes militares, que supongan desdoro para el uniforme, que puedan atentar contra la disciplina o la imagen de la Guardia Civil en cualquiera de sus formas, que reflejen motivos obscenos o inciten a discriminaciones de tipo sexual, racial, étnico o religioso. Asimismo, tampoco se permiten los tatuajes, argollas, espigas e inserciones, automutilaciones o similares que puedan ser visibles vistiendo las diferentes modalidades de los uniformes de uso general del Cuerpo de la Guardia Civil.",
+        "tipo": "Booleano",
+        "valor_deseado": false
+      }
+    ]
+  }
+}
