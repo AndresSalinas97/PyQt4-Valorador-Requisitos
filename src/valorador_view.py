@@ -47,10 +47,8 @@ class ValoradorWidget(QtGui.QWidget):
         reset_Button: QPushButton para reinicializar el caso.
         ruta_caso_LineEdit: QLineEdit de solo lectura que muestra la ruta del
                             fichero del caso.
-        valor_int_LineEdit: QLineEdit para introducir el valor de un criterio
-                            del tipo Entero.
-        valor_double_LineEdit: QLineEdit para introducir el valor de un criterio
-                               del tipo Porcentaje.
+        valor_LineEdit: QLineEdit para introducir el valor de un criterio
+                        del tipo Porcentaje o Numero.
         valor_ComboBox: QComboBox para introducir el valor de un criterio
                         del tipo Booleano.
         desc_caso_TextEdit: QTextEdit de solo lectura que muestra la
@@ -156,18 +154,9 @@ class ValoradorWidget(QtGui.QWidget):
         self.valoracion_LineEdit.setStatusTip(u"Resultado de la valoración")
 
         ##### Campos para los distintos tipos del valor del criterio #####
-        self.valor_int_LineEdit = QtGui.QLineEdit()
-        # self.valor_int_LineEdit.setValidator(QtGui.QIntValidator())
-        self.valor_int_LineEdit.setStatusTip(
+        self.valor_LineEdit = QtGui.QLineEdit()
+        self.valor_LineEdit.setStatusTip(
             u"Valor del criterio seleccionado (número entero)")
-
-        self.valor_double_LineEdit = QtGui.QLineEdit()
-        # self.valor_double_LineEdit.setValidator(
-        #     QtGui.QDoubleValidator(0, 1, 4, self.valor_double_LineEdit))
-        self.valor_double_LineEdit.setVisible(False)
-        self.valor_double_LineEdit.setStatusTip(
-            u"Valor del criterio seleccionado " +
-            u"(porcentaje expresado con un número decimal entre 0.0 y 1.0)")
 
         self.valor_ComboBox = QtGui.QComboBox()
         self.valor_ComboBox.addItems([u"None", u"True", u"False"])
@@ -195,12 +184,6 @@ class ValoradorWidget(QtGui.QWidget):
         ##### Lista de criterios #####
         self.criterios_List = QtGui.QListWidget()
         self.criterios_List.setMinimumHeight(1)
-        # Mostramos siempre las barras de scroll para evitar bug en el que
-        # dichas barras de scroll no aparecen cuando deberían.
-        self.criterios_List.setHorizontalScrollBarPolicy(
-            QtCore.Qt.ScrollBarAlwaysOn)
-        self.criterios_List.setVerticalScrollBarPolicy(
-            QtCore.Qt.ScrollBarAlwaysOn)
         self.criterios_List.setStatusTip(
             u"Criterios del caso (seleccione uno para examinarlo e " +
             u"introducir su valor)")
@@ -238,8 +221,7 @@ class ValoradorWidget(QtGui.QWidget):
 
         valor_Layout = QtGui.QVBoxLayout()
         valor_Layout.setAlignment(QtCore.Qt.AlignTop)
-        valor_Layout.addWidget(self.valor_int_LineEdit)
-        valor_Layout.addWidget(self.valor_double_LineEdit)
+        valor_Layout.addWidget(self.valor_LineEdit)
         valor_Layout.addWidget(self.valor_ComboBox)
         valor_Layout_Widget = QtGui.QWidget()
         valor_Layout_Widget.setLayout(valor_Layout)

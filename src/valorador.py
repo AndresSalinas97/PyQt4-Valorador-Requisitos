@@ -30,10 +30,10 @@ El programa trabaja con tres tipos de criterios:
                          como "Aprobado" si el valor introducido se encuentra
                          entre los valores 'valor_minimo' y 'valor_maximo'
                          especificados en el JSON.
-    Criterio Entero: Su valor es un número entero. . El criterio será valorado
-                     como "Aprobado" si el valor introducido se encuentra entre
-                     los valores 'valor_minimo' y 'valor_maximo' especificados
-                     en el JSON.
+    Criterio Numero: Su valor es un número (entero o decimal). El criterio será
+                     valorado como "Aprobado" si el valor introducido se
+                     encuentra entre los valores 'valor_minimo' y 'valor_maximo'
+                     especificados en el JSON.
 
 Autor: Andrés Salinas Lima <i52salia@uco.es>.
 """

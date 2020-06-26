@@ -1,25 +1,25 @@
 {
   "caso": {
     "nombre": "Caso de ejemplo",
-    "descripcion": "Caso de ejemplo con un criterio de cada tipo",
+    "descripcion": "Caso de ejemplo con un criterio de cada tipo.",
     "criterios": [
       {
         "nombre": "Criterio Booleano",
-        "descripcion": "Criterio del tipo Booleano de prueba (true para ser aprobado)",
+        "descripcion": "Criterio del tipo Booleano de prueba (true para ser aprobado).",
         "tipo": "Booleano",
         "valor_deseado": true
       },
       {
         "nombre": "Criterio Porcentaje",
-        "descripcion": "Criterio del tipo Porcentaje de prueba (entre 0.5 y 1 para ser aprobado)",
+        "descripcion": "Criterio del tipo Porcentaje de prueba (entre 0.5 y 1 para ser aprobado).",
         "tipo": "Porcentaje",
         "valor_minimo": 0.5,
         "valor_maximo": 1
       },
       {
-        "nombre": "Criterio Entero",
-        "descripcion": "Criterio del tipo Entero de prueba (entre 0 y 1500 para ser aprobado)",
-        "tipo": "Entero",
+        "nombre": "Criterio Numero",
+        "descripcion": "Criterio del tipo Numero de prueba (entre 0 y 1500 para ser aprobado).",
+        "tipo": "Numero",
         "valor_minimo": 0,
         "valor_maximo": 1500
       }

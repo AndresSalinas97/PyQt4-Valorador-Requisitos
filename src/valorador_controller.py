@@ -73,10 +73,7 @@ class ValoradorController():
         self._main_widget.criterios_List.currentItemChanged.connect(
             self._update_criterio_fields)
 
-        self._main_widget.valor_int_LineEdit.editingFinished.connect(
-            self._set_valor_criterio)
-
-        self._main_widget.valor_double_LineEdit.editingFinished.connect(
+        self._main_widget.valor_LineEdit.editingFinished.connect(
             self._set_valor_criterio)
 
         self._main_widget.valor_ComboBox.activated.connect(
@@ -154,26 +151,12 @@ class ValoradorController():
                 ValoradorMessageBoxes.show_error_message(e.message)
                 self._update_criterio_fields()
                 return
-        elif(selected_criterio.tipo == "Porcentaje"):
+        else:
             try:
-                valor = float(self._main_widget.valor_double_LineEdit.text())
+                valor = float(self._main_widget.valor_LineEdit.text())
             except Exception as e:
                 ValoradorMessageBoxes.show_error_message(
-                    u"Debe introducir un número decimal!")
-                self._update_criterio_fields()
-                return
-            try:
-                selected_criterio.valor = valor
-            except Exception as e:
-                ValoradorMessageBoxes.show_error_message(e.message)
-                self._update_criterio_fields()
-                return
-        elif(selected_criterio.tipo == "Entero"):
-            try:
-                valor = int(self._main_widget.valor_int_LineEdit.text())
-            except Exception as e:
-                ValoradorMessageBoxes.show_error_message(
-                    u"Debe introducir un número entero!")
+                    u"Debe introducir un número!")
                 self._update_criterio_fields()
                 return
             try:
@@ -231,8 +214,7 @@ class ValoradorController():
                 unicode(selected_criterio))
 
             if(selected_criterio.tipo == "Booleano"):
-                self._main_widget.valor_int_LineEdit.setVisible(False)
-                self._main_widget.valor_double_LineEdit.setVisible(False)
+                self._main_widget.valor_LineEdit.setVisible(False)
                 self._main_widget.valor_ComboBox.setVisible(True)
 
                 self._main_widget.valor_ComboBox.setCurrentIndex(
@@ -240,30 +222,20 @@ class ValoradorController():
                         str(selected_criterio.valor)
                     )
                 )
-            elif(selected_criterio.tipo == "Porcentaje"):
-                self._main_widget.valor_int_LineEdit.setVisible(False)
-                self._main_widget.valor_double_LineEdit.setVisible(True)
+            else:
+                self._main_widget.valor_LineEdit.setVisible(True)
                 self._main_widget.valor_ComboBox.setVisible(False)
 
-                self._main_widget.valor_double_LineEdit.setText(
-                    str(selected_criterio.valor)
-                )
-            elif(selected_criterio.tipo == "Entero"):
-                self._main_widget.valor_int_LineEdit.setVisible(True)
-                self._main_widget.valor_double_LineEdit.setVisible(False)
-                self._main_widget.valor_ComboBox.setVisible(False)
-
-                self._main_widget.valor_int_LineEdit.setText(
+                self._main_widget.valor_LineEdit.setText(
                     str(selected_criterio.valor)
                 )
         else:
             self._main_widget.desc_criterio_TextEdit.setText("")
 
-            self._main_widget.valor_int_LineEdit.setVisible(True)
-            self._main_widget.valor_double_LineEdit.setVisible(False)
+            self._main_widget.valor_LineEdit.setVisible(True)
             self._main_widget.valor_ComboBox.setVisible(False)
 
-            self._main_widget.valor_int_LineEdit.setText("")
+            self._main_widget.valor_LineEdit.setText("")
 
     def _update_valoracion_fields(self, valoracion_result):
         """

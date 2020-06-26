@@ -118,11 +118,11 @@ class Caso(object):
                                            float(criterio['valor_maximo']))
                     self.criterios.append(x)
 
-                elif (criterio['tipo'] == "Entero"):
-                    x = CriterioEntero(criterio['nombre'],
+                elif (criterio['tipo'] == "Numero"):
+                    x = CriterioNumero(criterio['nombre'],
                                        criterio['descripcion'],
-                                       int(criterio['valor_minimo']),
-                                       int(criterio['valor_maximo']))
+                                       float(criterio['valor_minimo']),
+                                       float(criterio['valor_maximo']))
                     self.criterios.append(x)
         except:
             self._full_reset()
@@ -223,7 +223,7 @@ class Criterio(object):
     Atributos/Propiedades:
         nombre: String con el nombre del criterio.
         descripcion: String con la descripción del criterio.
-        tipo: String con el tipo del criterio (Booleano, Porcentaje o Entero).
+        tipo: String con el tipo del criterio (Booleano, Porcentaje o Numero).
         valor: Valor actualmente asignado al criterio (su tipo dependerá del
                tipo de criterio). El criterio será evaluado en base a este
                valor.
@@ -315,10 +315,8 @@ class CriterioBooleano(Criterio):
     Atributos/Propiedades:
         nombre: String con el nombre del criterio.
         descripcion: String con la descripción del criterio.
-        tipo: String con el tipo del criterio (Booleano, Porcentaje o Entero).
-        valor: Valor actualmente asignado al criterio (su tipo dependerá del
-               tipo de criterio). El criterio será evaluado en base a este
-               valor.
+        tipo: String con el tipo del criterio ("Booleano").
+        valor: Valor actualmente asignado al criterio.
         valor_deseado: Valor que el criterio debe tener para ser evaluado como
                        True.
     """
@@ -402,10 +400,8 @@ class CriterioPorcentaje(Criterio):
     Atributos/Propiedades:
         nombre: String con el nombre del criterio.
         descripcion: String con la descripción del criterio.
-        tipo: String con el tipo del criterio (Booleano, Porcentaje o Entero).
-        valor: Valor actualmente asignado al criterio (su tipo dependerá del
-               tipo de criterio). El criterio será evaluado en base a este
-               valor.
+        tipo: String con el tipo del criterio ("Porcentaje").
+        valor: Valor actualmente asignado al criterio.
         valor_minimo: Porcentaje mínimo necesario para evaluar el criterio como
                       True.
         valor_maximo: Porcentaje máximo posible para evaluar el criterio como
@@ -416,9 +412,11 @@ class CriterioPorcentaje(Criterio):
         super(CriterioPorcentaje, self).__init__(nombre, descripcion)
 
         if(valor_minimo < 0 or valor_minimo > 1):
-            raise ValueError(u"El valor introducido debe estar entre 0 y 1!")
+            raise ValueError(
+                u"El valor introducido debe ser un número decimal entre 0 y 1!")
         if(valor_maximo < 0 or valor_maximo > 1):
-            raise ValueError(u"El valor introducido debe estar entre 0 y 1!")
+            raise ValueError(
+                u"El valor introducido debe ser un número decimal entre 0 y 1!")
 
         self._valor_minimo = valor_minimo
         self._valor_maximo = valor_maximo
@@ -435,7 +433,8 @@ class CriterioPorcentaje(Criterio):
             ValueError: El argumento valor_minimo debe estar entre 0 y 1.
         """
         if (valor < 0 or valor > 1):
-            raise ValueError(u"El valor introducido debe estar entre 0 y 1!")
+            raise ValueError(
+                u"El valor introducido debe ser un número decimal entre 0 y 1!")
 
         self._valor = valor
 
@@ -484,9 +483,9 @@ class CriterioPorcentaje(Criterio):
                 self.valor <= self.valor_maximo)
 
 
-class CriterioEntero(Criterio):
+class CriterioNumero(Criterio):
     """
-    Representa un criterio del tipo Entero.
+    Representa un criterio del tipo Numero.
 
     Argumentos constructor:
         nombre: String con el nombre del criterio.
@@ -495,25 +494,24 @@ class CriterioEntero(Criterio):
         valor_maximo: Valor máximo posible para evaluar el criterio como True.
 
     Excepciones constructor:
-        TypeError: El argumento valor_minimo debe ser un entero.
-        TypeError: El argumento valor_maximo debe ser un entero.
+        TypeError: El argumento valor_minimo debe ser un número.
+        TypeError: El argumento valor_maximo debe ser un número.
 
     Atributos/Propiedades:
         nombre: String con el nombre del criterio.
-        tipo: String con el tipo del criterio (Booleano, Porcentaje o Entero).
-        valor: Valor actualmente asignado al criterio (su tipo dependerá del
-               tipo de criterio).
+        tipo: String con el tipo del criterio ("Numero").
+        valor: Valor actualmente asignado al criterio
         valor_minimo: Valor mínimo necesario para evaluar el criterio como True.
         valor_maximo: Valor máximo posible para evaluar el criterio como True.
     """
 
     def __init__(self, nombre, descripcion, valor_minimo, valor_maximo):
-        super(CriterioEntero, self).__init__(nombre, descripcion)
+        super(CriterioNumero, self).__init__(nombre, descripcion)
 
-        if (not isinstance(valor_minimo, int)):
-            raise TypeError(u"El valor introducido debe ser un entero!")
-        if (not isinstance(valor_maximo, int)):
-            raise TypeError(u"El valor introducido debe ser un entero!")
+        if (not isinstance(valor_minimo, float)):
+            raise TypeError(u"El valor introducido debe ser un número!")
+        if (not isinstance(valor_maximo, float)):
+            raise TypeError(u"El valor introducido debe ser un número!")
 
         self._valor_minimo = valor_minimo
         self._valor_maximo = valor_maximo
@@ -524,10 +522,10 @@ class CriterioEntero(Criterio):
         Setter de la propiedad valor.
 
         Excepciones:
-            TypeError: El argumento valor debe ser un entero.
+            TypeError: El argumento valor debe ser un número.
         """
-        if (not isinstance(valor, int)):
-            raise TypeError(u"El valor introducido debe ser un entero!")
+        if (not isinstance(valor, float)):
+            raise TypeError(u"El valor introducido debe ser un número!")
 
         self._valor = valor
 
@@ -536,7 +534,7 @@ class CriterioEntero(Criterio):
         """
         Getter de la propiedad tipo.
         """
-        return("Entero")
+        return("Numero")
 
     @property
     def valor_minimo(self):
@@ -556,7 +554,7 @@ class CriterioEntero(Criterio):
         """
         Devuelve la representación en string del objecto (para usar con print).
         """
-        return (super(CriterioEntero, self).__str__() +
+        return (super(CriterioNumero, self).__str__() +
                 u"\n- VALOR MÍNIMO: " + str(self.valor_minimo) +
                 u"\n- VALOR MÁXIMO: " + str(self.valor_maximo))
 
