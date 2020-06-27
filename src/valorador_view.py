@@ -333,7 +333,7 @@ class ValoradorMainWindow(QtGui.QMainWindow):
         self.setCentralWidget(self.valorador_Widget)
 
         ##### Propiedades ventana #####
-        self.setWindowTitle(u"Valorador")
+        self.setWindowTitle(u"Valorador de Requisitos")
 
 
 class ValoradorMessageBoxes():
