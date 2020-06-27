@@ -68,16 +68,16 @@ class ValoradorController():
         self._main_window.open_file_Action.triggered.connect(
             self._load_caso)
 
-        self._main_widget.criterios_List.itemClicked.connect(
-            self._update_criterio_fields)
-        self._main_widget.criterios_List.currentItemChanged.connect(
-            self._update_criterio_fields)
+        self._main_widget.requisitos_List.itemClicked.connect(
+            self._update_requisito_fields)
+        self._main_widget.requisitos_List.currentItemChanged.connect(
+            self._update_requisito_fields)
 
         self._main_widget.valor_LineEdit.editingFinished.connect(
-            self._set_valor_criterio)
+            self._set_valor_requisito)
 
         self._main_widget.valor_ComboBox.activated.connect(
-            self._set_valor_criterio)
+            self._set_valor_requisito)
 
     def _load_caso(self):
         """
@@ -104,7 +104,7 @@ class ValoradorController():
 
     def _valorar_caso(self):
         """
-        Ejecuta la valoración de los criterios del caso.
+        Ejecuta la valoración de los requisitos del caso.
         """
         try:
             valoracion_result = self._caso.valorar()
@@ -116,28 +116,28 @@ class ValoradorController():
 
     def _reset_caso(self):
         """
-        Reinicializa los valores de los criterios y el resultado de la
+        Reinicializa los valores de los requisitos y el resultado de la
         valoración.
         """
         confirmation = ValoradorMessageBoxes.confirm_operation_message(
-            u"Perderá todos los valores introducidos en los criterios..." +
+            u"Perderá todos los valores introducidos en los requisitos..." +
             u"\n¿Desea continuar?")
 
         if (confirmation):
             self._caso.reset()
-            self._update_criterio_fields()
+            self._update_requisito_fields()
             self._clean_valoracion_fields()
 
-    def _set_valor_criterio(self):
+    def _set_valor_requisito(self):
         """
-        Actualiza el valor del criterio seleccionado con el valor introducido.
+        Actualiza el valor del requisito seleccionado con el valor introducido.
         """
-        QList = self._main_widget.criterios_List
+        QList = self._main_widget.requisitos_List
         selected_items = QList.selectedItems()
         selected_item_index = QList.indexFromItem(selected_items[0]).row()
-        selected_criterio = self._caso.criterios[selected_item_index]
+        selected_requisito = self._caso.requisitos[selected_item_index]
 
-        if(selected_criterio.tipo == "Booleano"):
+        if(selected_requisito.tipo == "Booleano"):
             try:
                 valor = self._main_widget.valor_ComboBox.currentText()
                 if(valor == "True"):
@@ -146,10 +146,10 @@ class ValoradorController():
                     valor = False
                 else:
                     valor = None
-                selected_criterio.valor = valor
+                selected_requisito.valor = valor
             except Exception as e:
                 ValoradorMessageBoxes.show_error_message(e.message)
-                self._update_criterio_fields()
+                self._update_requisito_fields()
                 return
         else:
             try:
@@ -157,16 +157,16 @@ class ValoradorController():
             except Exception as e:
                 ValoradorMessageBoxes.show_error_message(
                     u"Debe introducir un número!")
-                self._update_criterio_fields()
+                self._update_requisito_fields()
                 return
             try:
-                selected_criterio.valor = valor
+                selected_requisito.valor = valor
             except Exception as e:
                 ValoradorMessageBoxes.show_error_message(e.message)
-                self._update_criterio_fields()
+                self._update_requisito_fields()
                 return
 
-        self._update_criterio_fields()
+        self._update_requisito_fields()
         self._clean_valoracion_fields()
 
     def _update_entire_UI(self):
@@ -174,8 +174,8 @@ class ValoradorController():
         Actualiza todos los campos de la interfaz.
         """
         self._update_caso_fields()
-        self._update_criterio_fields()
-        self._update_criterios_list()
+        self._update_requisito_fields()
+        self._update_requisitos_list()
         self._clean_valoracion_fields()
 
     def _update_caso_fields(self):
@@ -187,39 +187,39 @@ class ValoradorController():
 
         self._main_widget.desc_caso_TextEdit.setText(unicode(self._caso))
 
-    def _update_criterios_list(self):
+    def _update_requisitos_list(self):
         """
-        Carga los criterios del caso en la lista de criterios de la interfaz.
+        Carga los requisitos del caso en la lista de requisitos de la interfaz.
         """
-        self._main_widget.criterios_List.clear()
+        self._main_widget.requisitos_List.clear()
 
-        for criterio in self._caso.criterios:
-            self._main_widget.criterios_List.addItem(criterio.nombre)
+        for requisito in self._caso.requisitos:
+            self._main_widget.requisitos_List.addItem(requisito.nombre)
 
-    def _update_criterio_fields(self):
+    def _update_requisito_fields(self):
         """
-        Actualiza la vista con la descripción y el valor del criterio
+        Actualiza la vista con la descripción y el valor del requisito
         seleccionado.
         """
-        QList = self._main_widget.criterios_List
+        QList = self._main_widget.requisitos_List
 
         selected_items = QList.selectedItems()
 
-        if(len(selected_items) == 1 and len(self._caso.criterios) > 0):
+        if(len(selected_items) == 1 and len(self._caso.requisitos) > 0):
             selected_item_index = QList.indexFromItem(selected_items[0]).row()
 
-            selected_criterio = self._caso.criterios[selected_item_index]
+            selected_requisito = self._caso.requisitos[selected_item_index]
 
-            self._main_widget.desc_criterio_TextEdit.setText(
-                unicode(selected_criterio))
+            self._main_widget.desc_requisito_TextEdit.setText(
+                unicode(selected_requisito))
 
-            if(selected_criterio.tipo == "Booleano"):
+            if(selected_requisito.tipo == "Booleano"):
                 self._main_widget.valor_LineEdit.setVisible(False)
                 self._main_widget.valor_ComboBox.setVisible(True)
 
                 self._main_widget.valor_ComboBox.setCurrentIndex(
                     self._main_widget.valor_ComboBox.findText(
-                        str(selected_criterio.valor)
+                        str(selected_requisito.valor)
                     )
                 )
             else:
@@ -227,10 +227,10 @@ class ValoradorController():
                 self._main_widget.valor_ComboBox.setVisible(False)
 
                 self._main_widget.valor_LineEdit.setText(
-                    str(selected_criterio.valor)
+                    str(selected_requisito.valor)
                 )
         else:
-            self._main_widget.desc_criterio_TextEdit.setText("")
+            self._main_widget.desc_requisito_TextEdit.setText("")
 
             self._main_widget.valor_LineEdit.setVisible(True)
             self._main_widget.valor_ComboBox.setVisible(False)

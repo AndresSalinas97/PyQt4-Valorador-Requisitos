@@ -2,7 +2,7 @@
   "caso": {
     "nombre": "Requisitos para opositar a Guardia Civil",
     "descripcion": "Requisitos que los aspirantes a Guardia Civil deberán reunir, en la fecha que finalice el plazo de admisión de instancias y mantener durante el proceso selectivo y los periodos de formación.",
-    "criterios": [
+    "requisitos": [
       {
         "nombre": "Nacionalidad Española",
         "descripcion": "Poseer la nacionalidad española.",

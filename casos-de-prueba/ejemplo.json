@@ -1,24 +1,24 @@
 {
   "caso": {
     "nombre": "Caso de ejemplo",
-    "descripcion": "Caso de ejemplo con un criterio de cada tipo.",
-    "criterios": [
+    "descripcion": "Caso de ejemplo con un requisito de cada tipo.",
+    "requisitos": [
       {
-        "nombre": "Criterio Booleano",
-        "descripcion": "Criterio del tipo Booleano de prueba (true para ser aprobado).",
+        "nombre": "Requisito Booleano",
+        "descripcion": "Requisito del tipo Booleano de prueba (true para ser aprobado).",
         "tipo": "Booleano",
         "valor_deseado": true
       },
       {
-        "nombre": "Criterio Porcentaje",
-        "descripcion": "Criterio del tipo Porcentaje de prueba (entre 0.5 y 1 para ser aprobado).",
+        "nombre": "Requisito Porcentaje",
+        "descripcion": "Requisito del tipo Porcentaje de prueba (entre 0.5 y 1 para ser aprobado).",
         "tipo": "Porcentaje",
         "valor_minimo": 0.5,
         "valor_maximo": 1
       },
       {
-        "nombre": "Criterio Numero",
-        "descripcion": "Criterio del tipo Numero de prueba (entre 0 y 1500 para ser aprobado).",
+        "nombre": "Requisito Numero",
+        "descripcion": "Requisito del tipo Numero de prueba (entre 0 y 1500 para ser aprobado).",
         "tipo": "Numero",
         "valor_minimo": 0,
         "valor_maximo": 1500

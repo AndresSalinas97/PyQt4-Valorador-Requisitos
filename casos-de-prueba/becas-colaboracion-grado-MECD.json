@@ -2,7 +2,7 @@
   "caso": {
     "nombre": "Becas de colaboración del MECD para estudiantes de grado - Convocatoria 2019-2020",
     "descripcion": "Becas del Ministerio de Educación, Cultura y Deporte destinadas a estudiantes universitarios para realizar tareas de investigación en departamentos universitarios.",
-    "criterios": [
+    "requisitos": [
       {
         "nombre": "Posesión de un título de grado",
         "descripcion": "No estar en posesión o en disposición legal de obtener un título académico de Licenciado, Ingeniero, Arquitecto, Graduado o Máster oficial.",

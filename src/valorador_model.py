@@ -30,21 +30,21 @@ class ValoradorModel():
 
 class Caso(object):
     """
-    Representa un caso (contiene los criterios a valorar).
+    Representa un caso (contiene los requisitos a valorar).
 
     Atributos/Propiedades:
         nombre: String con el nombre del caso.
         descripcion: String con la descripción del caso.
         explicacion: String con la explicación del resultado de la valoración.
-        criterios: Los criterios a evaluar (array con objectos de la clase
-                   Criterio).
+        requisitos: Los requisitos a evaluar (array con objectos de la clase
+                   Requisito).
     """
 
     def __init__(self):
         self._nombre = ""
         self._descripcion = ""
         self._explicacion = ""
-        self._criterios = []
+        self._requisitos = []
 
     @property
     def nombre(self):
@@ -68,11 +68,11 @@ class Caso(object):
         return self._explicacion
 
     @property
-    def criterios(self):
+    def requisitos(self):
         """
-        Getter de la propiedad criterios.
+        Getter de la propiedad requisitos.
         """
-        return self._criterios
+        return self._requisitos
 
     def __str__(self):
         """
@@ -80,11 +80,11 @@ class Caso(object):
         """
         return (u"- NOMBRE: " + unicode(self.nombre) +
                 u"\n- DESCRIPCIÓN: " + unicode(self.descripcion) +
-                u"\n- NÚMERO DE CRITERIOS: " + str(len(self.criterios)))
+                u"\n- NÚMERO DE REQUISITOS: " + str(len(self.requisitos)))
 
     def load_from_JSON_file(self, file_path):
         """
-        Carga el caso y todos sus criterios a partir de un fichero JSON con el
+        Carga el caso y todos sus requisitos a partir de un fichero JSON con el
         formato adecuado.
 
         Argumentos:
@@ -103,33 +103,33 @@ class Caso(object):
             self._nombre = parsed_json['caso']['nombre']
             self._descripcion = parsed_json['caso']['descripcion']
 
-            # Cargamos los datos de cada criterio dependiendo de su tipo
-            for criterio in parsed_json['caso']['criterios']:
-                if (criterio['tipo'] == "Booleano"):
-                    x = CriterioBooleano(criterio['nombre'],
-                                         criterio['descripcion'],
-                                         criterio['valor_deseado'])
-                    self.criterios.append(x)
+            # Cargamos los datos de cada requisito dependiendo de su tipo
+            for requisito in parsed_json['caso']['requisitos']:
+                if (requisito['tipo'] == "Booleano"):
+                    x = RequisitoBooleano(requisito['nombre'],
+                                          requisito['descripcion'],
+                                          requisito['valor_deseado'])
+                    self.requisitos.append(x)
 
-                elif (criterio['tipo'] == "Porcentaje"):
-                    x = CriterioPorcentaje(criterio['nombre'],
-                                           criterio['descripcion'],
-                                           float(criterio['valor_minimo']),
-                                           float(criterio['valor_maximo']))
-                    self.criterios.append(x)
+                elif (requisito['tipo'] == "Porcentaje"):
+                    x = RequisitoPorcentaje(requisito['nombre'],
+                                            requisito['descripcion'],
+                                            float(requisito['valor_minimo']),
+                                            float(requisito['valor_maximo']))
+                    self.requisitos.append(x)
 
-                elif (criterio['tipo'] == "Numero"):
-                    x = CriterioNumero(criterio['nombre'],
-                                       criterio['descripcion'],
-                                       float(criterio['valor_minimo']),
-                                       float(criterio['valor_maximo']))
-                    self.criterios.append(x)
+                elif (requisito['tipo'] == "Numero"):
+                    x = RequisitoNumero(requisito['nombre'],
+                                        requisito['descripcion'],
+                                        float(requisito['valor_minimo']),
+                                        float(requisito['valor_maximo']))
+                    self.requisitos.append(x)
         except:
             self._full_reset()
             raise IOError(u"El fichero JSON no tiene el formato correcto!")
 
-        # Comprobamos que todos los criterios se han cargado
-        if (len(self.criterios) != len(parsed_json['caso']['criterios'])):
+        # Comprobamos que todos los requisitos se han cargado
+        if (len(self.requisitos) != len(parsed_json['caso']['requisitos'])):
             self._full_reset()
             raise IOError(u"El fichero JSON no tiene el formato correcto!")
 
@@ -155,50 +155,51 @@ class Caso(object):
     def _full_reset(self):
         """
         Reinicializa el caso completamente (elimina todo, incluido los
-        criterios).
+        requisitos).
         """
         self._nombre = ""
         self._descripcion = ""
-        self._criterios = []
+        self._requisitos = []
         self._explicacion = ""
 
     def reset(self):
         """
         Reinicializa el caso (elimina la explicación y el valor de los
-        criterios).
+        requisitos).
         """
         self._explicacion = ""
 
-        for criterio in self.criterios:
-            criterio.reset()
+        for requisito in self.requisitos:
+            requisito.reset()
 
     def valorar(self):
         """
-        Evalúa todos los criterios, devuelve el resultado de la valoración y
+        Evalúa todos los requisitos, devuelve el resultado de la valoración y
         actualiza el atributo explicacion con la explicación del resultado.
 
         Excepciones:
-            RuntimeError: El caso debe tener al menos un criterio para poder ser
+            RuntimeError: El caso debe tener al menos un requisito para poder ser
             valorado.
         """
-        n_criterios = len(self.criterios)
+        n_requisitos = len(self.requisitos)
 
-        if(n_criterios == 0):
+        if(n_requisitos == 0):
             raise RuntimeError(
-                u"El caso debe tener al menos un criterio para poder ser "
+                u"El caso debe tener al menos un requisito para poder ser "
                 "valorado!")
 
         result = True
         self._explicacion = u""
         i = 1
 
-        for criterio in self.criterios:
+        for requisito in self.requisitos:
             self._explicacion += (
-                u"*** Criterio " + str(i) + u"/" + str(n_criterios) + u" ***\n"
-                + unicode(criterio)
-                + u"\n* VALOR INTRODUCIDO: " + unicode(criterio.valor))
+                u"*** Requisito " + str(i) + u"/" +
+                str(n_requisitos) + u" ***\n"
+                + unicode(requisito)
+                + u"\n* VALOR INTRODUCIDO: " + unicode(requisito.valor))
 
-            if(criterio.valorar()):
+            if(requisito.valorar()):
                 self._explicacion += u"\n===> APROBADO <===\n\n"
             else:
                 self._explicacion += u"\n===> RECHAZADO <===\n\n"
@@ -209,23 +210,23 @@ class Caso(object):
         return result
 
 
-class Criterio(object):
+class Requisito(object):
     """
-    Clase base para representar los criterios.
+    Clase base para representar los requisitos.
 
     Esta clase no debe ser instanciada; es solo una interfaz (clase base
     abstracta).
 
     Argumentos constructor:
-        nombre: String con el nombre del criterio.
-        descripcion: String con la descripción del criterio.
+        nombre: String con el nombre del requisito.
+        descripcion: String con la descripción del requisito.
 
     Atributos/Propiedades:
-        nombre: String con el nombre del criterio.
-        descripcion: String con la descripción del criterio.
-        tipo: String con el tipo del criterio (Booleano, Porcentaje o Numero).
-        valor: Valor actualmente asignado al criterio (su tipo dependerá del
-               tipo de criterio). El criterio será evaluado en base a este
+        nombre: String con el nombre del requisito.
+        descripcion: String con la descripción del requisito.
+        tipo: String con el tipo del requisito (Booleano, Porcentaje o Numero).
+        valor: Valor actualmente asignado al requisito (su tipo dependerá del
+               tipo de requisito). El requisito será evaluado en base a este
                valor.
     """
 
@@ -263,7 +264,7 @@ class Criterio(object):
         Deberá ser implementado por la clase heredera.
 
         Argumentos:
-            valor: El valor del criterio.
+            valor: El valor del requisito.
         """
         raise NotImplementedError
 
@@ -286,7 +287,7 @@ class Criterio(object):
 
     def valorar(self):
         """
-        Evalúa el criterio y devuelve True o False según corresponda.
+        Evalúa el requisito y devuelve True o False según corresponda.
 
         Deberá ser implementado por la clase heredera.
         """
@@ -294,48 +295,48 @@ class Criterio(object):
 
     def reset(self):
         """
-        Reinicializa el valor del criterio.
+        Reinicializa el valor del requisito.
         """
         self._valor = None
 
 
-class CriterioBooleano(Criterio):
+class RequisitoBooleano(Requisito):
     """
-    Representa un criterio del tipo booleano.
+    Representa un requisito del tipo booleano.
 
     Argumentos constructor:
-        nombre: String con el nombre del criterio.
-        descripcion: String con la descripción del criterio.
-        valor_deseado: Valor que el criterio debe tener para ser evaluado como
+        nombre: String con el nombre del requisito.
+        descripcion: String con la descripción del requisito.
+        valor_deseado: Valor que el requisito debe tener para ser evaluado como
                        True.
 
     Excepciones constructor:
         TypeError: El argumento valor_deseado debe ser un booleano.
 
     Atributos/Propiedades:
-        nombre: String con el nombre del criterio.
-        descripcion: String con la descripción del criterio.
-        tipo: String con el tipo del criterio ("Booleano").
-        valor: Valor actualmente asignado al criterio.
-        valor_deseado: Valor que el criterio debe tener para ser evaluado como
+        nombre: String con el nombre del requisito.
+        descripcion: String con la descripción del requisito.
+        tipo: String con el tipo del requisito ("Booleano").
+        valor: Valor actualmente asignado al requisito.
+        valor_deseado: Valor que el requisito debe tener para ser evaluado como
                        True.
     """
 
     def __init__(self, nombre, descripcion, valor_deseado):
-        super(CriterioBooleano, self).__init__(nombre, descripcion)
+        super(RequisitoBooleano, self).__init__(nombre, descripcion)
 
         if (not isinstance(valor_deseado, bool)):
             raise TypeError(u"El valor introducido debe ser un booleano!")
 
         self._valor_deseado = valor_deseado
 
-    @Criterio.valor.setter
+    @Requisito.valor.setter
     def valor(self, valor):
         """
         Setter de la propierdad valor.
 
         Argumentos:
-            valor: El valor del criterio.
+            valor: El valor del requisito.
 
         Excepciones:
             TypeError: El argumento valor debe ser un booleano.
@@ -363,34 +364,34 @@ class CriterioBooleano(Criterio):
         """
         Devuelve la representación en string del objecto (para usar con print).
         """
-        return (super(CriterioBooleano, self).__str__() +
+        return (super(RequisitoBooleano, self).__str__() +
                 u"\n- VALOR DESEADO: " + str(self.valor_deseado))
 
     def valorar(self):
         """
-        Evalúa el criterio y devuelve True o False según corresponda.
+        Evalúa el requisito y devuelve True o False según corresponda.
 
         Excepciones:
-            RuntimeError: El criterio debe tener un valor asignado antes de
+            RuntimeError: El requisito debe tener un valor asignado antes de
                           poder ser valorado.
         """
         if(self.valor is None):
-            raise RuntimeError(u"El criterio \"" + self.nombre +
+            raise RuntimeError(u"El requisito \"" + self.nombre +
                                "\" debe tener un valor asignado!")
 
         return (self.valor == self.valor_deseado)
 
 
-class CriterioPorcentaje(Criterio):
+class RequisitoPorcentaje(Requisito):
     """
-    Representa un criterio del tipo Porcentaje.
+    Representa un requisito del tipo Porcentaje.
 
     Argumentos constructor:
-        nombre: String con el nombre del criterio.
-        descripcion: String con la descripción del criterio.
-        valor_minimo: Porcentaje mínimo necesario para evaluar el criterio como
+        nombre: String con el nombre del requisito.
+        descripcion: String con la descripción del requisito.
+        valor_minimo: Porcentaje mínimo necesario para evaluar el requisito como
                       True.
-        valor_maximo: Porcentaje máximo posible para evaluar el criterio como
+        valor_maximo: Porcentaje máximo posible para evaluar el requisito como
                       True.
 
     Excepciones constructor:
@@ -398,18 +399,18 @@ class CriterioPorcentaje(Criterio):
         ValueError: El argumento valor_maximo debe estar entre 0 y 1.
 
     Atributos/Propiedades:
-        nombre: String con el nombre del criterio.
-        descripcion: String con la descripción del criterio.
-        tipo: String con el tipo del criterio ("Porcentaje").
-        valor: Valor actualmente asignado al criterio.
-        valor_minimo: Porcentaje mínimo necesario para evaluar el criterio como
+        nombre: String con el nombre del requisito.
+        descripcion: String con la descripción del requisito.
+        tipo: String con el tipo del requisito ("Porcentaje").
+        valor: Valor actualmente asignado al requisito.
+        valor_minimo: Porcentaje mínimo necesario para evaluar el requisito como
                       True.
-        valor_maximo: Porcentaje máximo posible para evaluar el criterio como
+        valor_maximo: Porcentaje máximo posible para evaluar el requisito como
                       True.
     """
 
     def __init__(self, nombre, descripcion, valor_minimo, valor_maximo):
-        super(CriterioPorcentaje, self).__init__(nombre, descripcion)
+        super(RequisitoPorcentaje, self).__init__(nombre, descripcion)
 
         if(valor_minimo < 0 or valor_minimo > 1):
             raise ValueError(
@@ -421,13 +422,13 @@ class CriterioPorcentaje(Criterio):
         self._valor_minimo = valor_minimo
         self._valor_maximo = valor_maximo
 
-    @Criterio.valor.setter
+    @Requisito.valor.setter
     def valor(self, valor):
         """
         Setter de la propiedad valor.
 
         Argumentos:
-            valor: El valor del criterio.
+            valor: El valor del requisito.
 
         Excepciones:
             ValueError: El argumento valor_minimo debe estar entre 0 y 1.
@@ -463,50 +464,50 @@ class CriterioPorcentaje(Criterio):
         """
         Devuelve la representación en string del objecto (para usar con print).
         """
-        return (super(CriterioPorcentaje, self).__str__() +
+        return (super(RequisitoPorcentaje, self).__str__() +
                 u"\n- VALOR MÍNIMO: " + str(self.valor_minimo) +
                 u"\n- VALOR MÁXIMO: " + str(self.valor_maximo))
 
     def valorar(self):
         """
-        Evalúa el criterio y devuelve True o False según corresponda.
+        Evalúa el requisito y devuelve True o False según corresponda.
 
         Excepciones:
-            RuntimeError: El criterio debe tener un valor asignado antes de
+            RuntimeError: El requisito debe tener un valor asignado antes de
                           poder ser valorado.
         """
         if(self.valor is None):
-            raise RuntimeError(u"El criterio \"" + self.nombre +
+            raise RuntimeError(u"El requisito \"" + self.nombre +
                                "\" debe tener un valor asignado!")
 
         return (self.valor >= self.valor_minimo and
                 self.valor <= self.valor_maximo)
 
 
-class CriterioNumero(Criterio):
+class RequisitoNumero(Requisito):
     """
-    Representa un criterio del tipo Numero.
+    Representa un requisito del tipo Numero.
 
     Argumentos constructor:
-        nombre: String con el nombre del criterio.
-        descripcion: String con la descripción del criterio.
-        valor_minimo: Valor mínimo necesario para evaluar el criterio como True.
-        valor_maximo: Valor máximo posible para evaluar el criterio como True.
+        nombre: String con el nombre del requisito.
+        descripcion: String con la descripción del requisito.
+        valor_minimo: Valor mínimo necesario para evaluar el requisito como True.
+        valor_maximo: Valor máximo posible para evaluar el requisito como True.
 
     Excepciones constructor:
         TypeError: El argumento valor_minimo debe ser un número.
         TypeError: El argumento valor_maximo debe ser un número.
 
     Atributos/Propiedades:
-        nombre: String con el nombre del criterio.
-        tipo: String con el tipo del criterio ("Numero").
-        valor: Valor actualmente asignado al criterio
-        valor_minimo: Valor mínimo necesario para evaluar el criterio como True.
-        valor_maximo: Valor máximo posible para evaluar el criterio como True.
+        nombre: String con el nombre del requisito.
+        tipo: String con el tipo del requisito ("Numero").
+        valor: Valor actualmente asignado al requisito
+        valor_minimo: Valor mínimo necesario para evaluar el requisito como True.
+        valor_maximo: Valor máximo posible para evaluar el requisito como True.
     """
 
     def __init__(self, nombre, descripcion, valor_minimo, valor_maximo):
-        super(CriterioNumero, self).__init__(nombre, descripcion)
+        super(RequisitoNumero, self).__init__(nombre, descripcion)
 
         if (not isinstance(valor_minimo, float)):
             raise TypeError(u"El valor introducido debe ser un número!")
@@ -516,7 +517,7 @@ class CriterioNumero(Criterio):
         self._valor_minimo = valor_minimo
         self._valor_maximo = valor_maximo
 
-    @Criterio.valor.setter
+    @Requisito.valor.setter
     def valor(self, valor):
         """
         Setter de la propiedad valor.
@@ -554,20 +555,20 @@ class CriterioNumero(Criterio):
         """
         Devuelve la representación en string del objecto (para usar con print).
         """
-        return (super(CriterioNumero, self).__str__() +
+        return (super(RequisitoNumero, self).__str__() +
                 u"\n- VALOR MÍNIMO: " + str(self.valor_minimo) +
                 u"\n- VALOR MÁXIMO: " + str(self.valor_maximo))
 
     def valorar(self):
         """
-        Evalúa el criterio y devuelve True o False según corresponda.
+        Evalúa el requisito y devuelve True o False según corresponda.
 
         Excepciones:
-            RuntimeError: El criterio debe tener un valor asignado antes de
+            RuntimeError: El requisito debe tener un valor asignado antes de
                           poder ser valorado.
         """
         if(self.valor is None):
-            raise RuntimeError(u"El criterio \"" + self.nombre +
+            raise RuntimeError(u"El requisito \"" + self.nombre +
                                "\" debe tener un valor asignado!")
 
         return (self.valor >= self.valor_minimo and

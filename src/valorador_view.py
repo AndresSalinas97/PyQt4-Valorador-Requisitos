@@ -47,19 +47,19 @@ class ValoradorWidget(QtGui.QWidget):
         reset_Button: QPushButton para reinicializar el caso.
         ruta_caso_LineEdit: QLineEdit de solo lectura que muestra la ruta del
                             fichero del caso.
-        valor_LineEdit: QLineEdit para introducir el valor de un criterio
+        valor_LineEdit: QLineEdit para introducir el valor de un requisito
                         del tipo Porcentaje o Numero.
-        valor_ComboBox: QComboBox para introducir el valor de un criterio
+        valor_ComboBox: QComboBox para introducir el valor de un requisito
                         del tipo Booleano.
         desc_caso_TextEdit: QTextEdit de solo lectura que muestra la
                             descripción del caso.
-        desc_criterio_TextEdit: QTextEdit de solo lectura que muestra la
-                                descricpión del criterio seleccionado.
+        desc_requisito_TextEdit: QTextEdit de solo lectura que muestra la
+                                descricpión del requisito seleccionado.
         valoracion_LineEdit: QLineEdit de solo lectura que muestra el resultado
                              de la valoración.
         explicacion_TextEdit: QTextEdit de solo lectura que muestra la
                               explicación de la valoración.
-        criterios_List: QListWidget con la lista de criterios del caso.
+        requisitos_List: QListWidget con la lista de requisitos del caso.
     """
 
     # Espacio vertical entre los elementos del grid layout.
@@ -111,14 +111,14 @@ class ValoradorWidget(QtGui.QWidget):
         desc_caso_label = QtGui.QLabel(u"Descripción del Caso")
         desc_caso_label.setFont(bold_font)
 
-        criterio_label = QtGui.QLabel(u"Criterios")
-        criterio_label.setFont(bold_font)
+        requisito_label = QtGui.QLabel(u"Requisitos")
+        requisito_label.setFont(bold_font)
 
-        desc_criterio_label = QtGui.QLabel(u"Descripción del Criterio")
-        desc_criterio_label.setFont(bold_font)
+        desc_requisito_label = QtGui.QLabel(u"Descripción del Requisito")
+        desc_requisito_label.setFont(bold_font)
 
-        valor_criterio_label = QtGui.QLabel(u"Valor del Criterio")
-        valor_criterio_label.setFont(bold_font)
+        valor_requisito_label = QtGui.QLabel(u"Valor del Requisito")
+        valor_requisito_label.setFont(bold_font)
 
         valoracion_label = QtGui.QLabel(u"Valoración")
         valoracion_label.setFont(bold_font)
@@ -138,7 +138,7 @@ class ValoradorWidget(QtGui.QWidget):
 
         self.reset_Button = QtGui.QPushButton(u"Reset")
         self.reset_Button.setStatusTip(
-            u"Reinicializar resultado y valores de los criterios")
+            u"Reinicializar resultado y valores de los requisitos")
 
         ##### Campos de texto de una línea #####
         self.ruta_caso_LineEdit = QtGui.QLineEdit()
@@ -153,16 +153,16 @@ class ValoradorWidget(QtGui.QWidget):
         self.valoracion_LineEdit.setAlignment(QtCore.Qt.AlignCenter)
         self.valoracion_LineEdit.setStatusTip(u"Resultado de la valoración")
 
-        ##### Campos para los distintos tipos del valor del criterio #####
+        ##### Campos para los distintos tipos del valor del requisito #####
         self.valor_LineEdit = QtGui.QLineEdit()
         self.valor_LineEdit.setStatusTip(
-            u"Valor del criterio seleccionado (número entero)")
+            u"Valor del requisito seleccionado (número entero)")
 
         self.valor_ComboBox = QtGui.QComboBox()
         self.valor_ComboBox.addItems([u"None", u"True", u"False"])
         self.valor_ComboBox.setVisible(False)
         self.valor_ComboBox.setStatusTip(
-            u"Valor del criterio seleccionado (True o False)")
+            u"Valor del requisito seleccionado (True o False)")
 
         ##### Campos de texto #####
         self.desc_caso_TextEdit = QtGui.QTextEdit()
@@ -170,22 +170,22 @@ class ValoradorWidget(QtGui.QWidget):
         self.desc_caso_TextEdit.setMinimumHeight(1)
         self.desc_caso_TextEdit.setStatusTip(u"Descripción del caso abierto")
 
-        self.desc_criterio_TextEdit = QtGui.QTextEdit()
-        self.desc_criterio_TextEdit.setReadOnly(True)
-        self.desc_criterio_TextEdit.setMinimumHeight(1)
-        self.desc_criterio_TextEdit.setStatusTip(
-            u"Descripción del criterio seleccionado")
+        self.desc_requisito_TextEdit = QtGui.QTextEdit()
+        self.desc_requisito_TextEdit.setReadOnly(True)
+        self.desc_requisito_TextEdit.setMinimumHeight(1)
+        self.desc_requisito_TextEdit.setStatusTip(
+            u"Descripción del requisito seleccionado")
 
         self.explicacion_TextEdit = QtGui.QTextEdit()
         self.explicacion_TextEdit.setReadOnly(True)
         self.explicacion_TextEdit.setMinimumHeight(1)
         self.explicacion_TextEdit.setStatusTip(u"Explicación del resultado")
 
-        ##### Lista de criterios #####
-        self.criterios_List = QtGui.QListWidget()
-        self.criterios_List.setMinimumHeight(1)
-        self.criterios_List.setStatusTip(
-            u"Criterios del caso (seleccione uno para examinarlo e " +
+        ##### Lista de requisitos #####
+        self.requisitos_List = QtGui.QListWidget()
+        self.requisitos_List.setMinimumHeight(1)
+        self.requisitos_List.setStatusTip(
+            u"Requisitos del caso (seleccione uno para examinarlo e " +
             u"introducir su valor)")
 
         ##### Cajas de layout #####
@@ -256,12 +256,12 @@ class ValoradorWidget(QtGui.QWidget):
 
         grid.addWidget(abrir_Layout_Widget, 2, 0, 1, 3)
 
-        grid.addWidget(criterio_label, 3, 0, 1, 1)
-        grid.addWidget(desc_criterio_label, 3, 1, 1, 1)
-        grid.addWidget(valor_criterio_label, 3, 2, 1, 1)
+        grid.addWidget(requisito_label, 3, 0, 1, 1)
+        grid.addWidget(desc_requisito_label, 3, 1, 1, 1)
+        grid.addWidget(valor_requisito_label, 3, 2, 1, 1)
 
-        grid.addWidget(self.criterios_List, 4, 0, 1, 1)
-        grid.addWidget(self.desc_criterio_TextEdit, 4, 1, 1, 1)
+        grid.addWidget(self.requisitos_List, 4, 0, 1, 1)
+        grid.addWidget(self.desc_requisito_TextEdit, 4, 1, 1, 1)
         grid.addWidget(valor_Layout_Widget, 4, 2, 1, 1)
 
         grid.addWidget(valorar_Layout_Widget, 5, 0, 1, 3)
