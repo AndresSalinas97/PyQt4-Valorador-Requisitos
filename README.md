@@ -2,7 +2,7 @@
 
 **Trabajo final de la asignatura Ingeniería Sistemas Software Basados en Conocimiento.**
 
-Programa valorador de requisitos desarrollado con PyQt4 siguiendo la arquitectura Modelo-Vista-Controlador y la metodología CommonKADS. Permite llevar a cabo la tarea de valoración de CommonKADS sobre diferentes dominios de aplicación.
+Programa valorador de requisitos desarrollado con PyQt4 siguiendo la arquitectura Modelo-Vista-Controlador y la metodología CommonKADS. Permite llevar a cabo la tarea de valoración de CommonKADS sobre diferentes dominios de conocimiento.
 
 ![Imagen de la ventana principal del programa](docs/images/mainWindow.png)
 
@@ -10,7 +10,7 @@ Programa valorador de requisitos desarrollado con PyQt4 siguiendo la arquitectur
 
 El programa cuenta una interfaz gráfica para que el usuario pueda introducir el valor de cada requisito y comprobar el resultado de la tarea de valoración de forma cómoda.
 
-Cada caso (dominio) cuenta con una serie de requisitos que serán evaluados de forma independiente: si un solo requisito es rechazado todo el caso será rechazado.
+Cada caso (dominio) cuenta con una serie de requisitos que serán evaluados de forma independiente: cada requisito es evaluado como "Aprobado" o "Rechazado" independientemente del resto y si uno solo de ellos es rechazado todo el caso será rechazado.
 
 Los casos y todos sus requisitos se cargan a través de un fichero JSON con el siguiente formato:
 
