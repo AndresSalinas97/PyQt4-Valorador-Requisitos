@@ -96,7 +96,7 @@ class ValoradorController():
                 self._model.opened_file_path = file_path
                 self._update_entire_UI()
                 ValoradorMessageBoxes.show_info_message(
-                    u"Archivo cargado con éxito")
+                    u"Archivo cargado con éxito!")
             except Exception as e:
                 self._update_entire_UI()
                 ValoradorMessageBoxes.show_error_message(e.message)
