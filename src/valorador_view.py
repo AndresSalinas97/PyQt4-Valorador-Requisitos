@@ -279,20 +279,20 @@ class ValoradorWidget(QtGui.QWidget):
 
 class ValoradorMainWindow(QtGui.QMainWindow):
     """
-    Ventana principal del programa.
+    QMainWindow con la ventana principal del programa.
 
     Contiene la barra de menús, la barra de estado, y, por supuesto, el widget
     con el valorador.
 
     Argumentos constructor:
         valorador_Widget: Widget con el valorador (objeto de la clase
-            valoradorWidget)
+            valoradorWidget).
 
     Atributos/Propiedades:
         valorador_Widget: Widget con el valorador (objeto de la clase
-            valoradorWidget)
+            valoradorWidget).
         exit_Action: QAction para salir del programa.
-        open_file_Action: QAction para abrir fichero de dominio.
+        open_file_Action: QAction para abrir fichero de caso.
     """
 
     def __init__(self, valorador_Widget):
@@ -339,7 +339,7 @@ class ValoradorMainWindow(QtGui.QMainWindow):
 class ValoradorMessageBoxes():
     """
     Contiene métodos para mostrar mensajes emergentes y ventanas de diálogo
-    para abrir/guardar ficheros/directorios.
+    para abrir ficheros.
     """
 
     @staticmethod

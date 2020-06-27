@@ -19,7 +19,7 @@ class ValoradorModel():
     Clase con el modelo del valorador.
 
     Atributos/Propiedades:
-        caso: El caso a valorar.
+        caso: El caso a valorar (objeto de la clase Caso).
         opened_file_path: String con la ruta del fichero de caso abierto.
     """
 
@@ -36,7 +36,7 @@ class Caso(object):
         nombre: String con el nombre del caso.
         descripcion: String con la descripción del caso.
         explicacion: String con la explicación del resultado de la valoración.
-        requisitos: Los requisitos a evaluar (array con objectos de la clase
+        requisitos: Los requisitos a evaluar (array con objetos de la clase
                    Requisito).
     """
 
@@ -76,7 +76,7 @@ class Caso(object):
 
     def __str__(self):
         """
-        Devuelve la representación en string del objecto (para usar con print).
+        Devuelve la representación en string del objeto (para usar con print).
         """
         return (u"- NOMBRE: " + unicode(self.nombre) +
                 u"\n- DESCRIPCIÓN: " + unicode(self.descripcion) +
@@ -224,7 +224,8 @@ class Requisito(object):
     Atributos/Propiedades:
         nombre: String con el nombre del requisito.
         descripcion: String con la descripción del requisito.
-        tipo: String con el tipo del requisito (Booleano, Porcentaje o Numero).
+        tipo: String con el tipo del requisito ("Booleano", "Porcentaje" o
+              "Numero").
         valor: Valor actualmente asignado al requisito (su tipo dependerá del
                tipo de requisito). El requisito será evaluado en base a este
                valor.
@@ -279,7 +280,7 @@ class Requisito(object):
 
     def __str__(self):
         """
-        Devuelve la representación en string del objecto (para usar con print).
+        Devuelve la representación en string del objeto (para usar con print).
         """
         return (u"- NOMBRE: " + unicode(self.nombre) +
                 u"\n- DESCRIPCIÓN: " + unicode(self.descripcion) +
@@ -302,7 +303,7 @@ class Requisito(object):
 
 class RequisitoBooleano(Requisito):
     """
-    Representa un requisito del tipo booleano.
+    Representa un requisito del tipo Booleano.
 
     Argumentos constructor:
         nombre: String con el nombre del requisito.
@@ -362,7 +363,7 @@ class RequisitoBooleano(Requisito):
 
     def __str__(self):
         """
-        Devuelve la representación en string del objecto (para usar con print).
+        Devuelve la representación en string del objeto (para usar con print).
         """
         return (super(RequisitoBooleano, self).__str__() +
                 u"\n- VALOR DESEADO: " + str(self.valor_deseado))
@@ -462,7 +463,7 @@ class RequisitoPorcentaje(Requisito):
 
     def __str__(self):
         """
-        Devuelve la representación en string del objecto (para usar con print).
+        Devuelve la representación en string del objeto (para usar con print).
         """
         return (super(RequisitoPorcentaje, self).__str__() +
                 u"\n- VALOR MÍNIMO: " + str(self.valor_minimo) +
@@ -553,7 +554,7 @@ class RequisitoNumero(Requisito):
 
     def __str__(self):
         """
-        Devuelve la representación en string del objecto (para usar con print).
+        Devuelve la representación en string del objeto (para usar con print).
         """
         return (super(RequisitoNumero, self).__str__() +
                 u"\n- VALOR MÍNIMO: " + str(self.valor_minimo) +
