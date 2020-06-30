@@ -6,7 +6,7 @@ Programa valorador de requisitos desarrollado con PyQt4 siguiendo la arquitectur
 
 ![Imagen de la ventana principal del programa](docs/images/mainWindow.png)
 
-Una guía de usuario y documentación más extensa están disponibles en [docs/documentacion.pdf](https://github.com/AndresSalinas97/Valorador-Requisitos-PyQt4/blob/master/docs/documentacion.pdf).
+Una guía de usuario y documentación más extensa están disponibles en [docs/documentacion.pdf](https://github.com/AndresSalinas97/Valorador-Requisitos-PyQt4/blob/master/docs/Documentacion-Aplicacion.pdf).
 
 ## Funcionamiento
 
