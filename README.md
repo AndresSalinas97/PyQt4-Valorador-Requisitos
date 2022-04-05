@@ -54,7 +54,3 @@ El programa trabaja con tres tipos de requisitos:
 - Requisito Porcentaje: Su valor es un porcentaje (0% - 100%) expresado con un número decimal (0.0 - 1.0). El requisito será valorado como "Aprobado" si el valor introducido se encuentra entre los valores `valor_minimo` y `valor_maximo` especificados en el JSON.
 
 - Requisito Numero: Su valor es un número (entero o decimal). El requisito será valorado como "Aprobado" si el valor introducido se encuentra entre los valores `valor_minimo` y `valor_maximo` especificados en el JSON.
-
-## Autores
-
-- Andrés Salinas Lima
